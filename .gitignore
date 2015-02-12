@@ -34,3 +34,6 @@ ResourcePath.hpp
 # More OS-X horse shit
 *.DS_Store
 
+# XCode stuff
+*.plist
+*.xcodeproj
