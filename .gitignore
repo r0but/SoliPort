@@ -30,3 +30,7 @@
 # OS-X specific helpers
 ResourcePath.mm
 ResourcePath.hpp
+
+# More OS-X horse shit
+*.DS_Store
+
