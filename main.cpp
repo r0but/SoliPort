@@ -1,91 +1,120 @@
+/*
+ The MIT License (MIT)
+ 
+ Copyright (c) 2014 Joshua Trahan
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ 
+ The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.
+*/
 
-//
-// Disclamer:
-// ----------
-//
-// This code will work only if you selected window, graphics and audio.
-//
-// Note that the "Run Script" build phase will copy the required frameworks
-// or dylibs to your application bundle so you can execute it on any OS X
-// computer.
-//
-// Your resource files (images, sounds, fonts, ...) are also copied to your
-// application bundle. To get the path to these resource, use the helper
-// method resourcePath() from ResourcePath.hpp
-//
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <cmath>
 
-#include <SFML/Audio.hpp>
-#include <SFML/Graphics.hpp>
+#include <ResourcePath.hpp>
 
-// Here is a small helper for you ! Have a look.
-#include "ResourcePath.hpp"
+#include "levelType.hpp"
 
-int main(int, char const**)
-{
-    // Create the main window
-    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML window");
+using namespace std;
 
-    // Set the Icon
-    sf::Image icon;
-    if (!icon.loadFromFile(resourcePath() + "icon.png")) {
-        return EXIT_FAILURE;
+void drawWinScreen(){
+    for (int i = 0; i < 25; i++){
+        cout << endl;
     }
-    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+    
+    cout << "Congratulate! You are winner!" << endl;
+}
 
-    // Load a sprite to display
-    sf::Texture texture;
-    if (!texture.loadFromFile(resourcePath() + "cute_image.jpg")) {
-        return EXIT_FAILURE;
-    }
-    sf::Sprite sprite(texture);
+void drawLossScreen(){
+    cout << endl << "You lose! Good day, sir." << endl;
+}
 
-    // Create a graphical text to display
-    sf::Font font;
-    if (!font.loadFromFile(resourcePath() + "sansation.ttf")) {
-        return EXIT_FAILURE;
-    }
-    sf::Text text("Hello SFML", font, 50);
-    text.setColor(sf::Color::Black);
-
-    // Load a music to play
-    sf::Music music;
-    if (!music.openFromFile(resourcePath() + "nice_music.ogg")) {
-        return EXIT_FAILURE;
-    }
-
-    // Play the music
-    music.play();
-
-    // Start the game loop
-    while (window.isOpen())
-    {
-        // Process events
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            // Close window: exit
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
-
-            // Escape pressed: exit
-            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
-                window.close();
-            }
+void gameLoop(levelType& level){
+    char userInput;
+    while(true){
+        
+        // winOrLose - 0 means game isn't finished, 1 means win, 2 means loss
+        int winOrLose = 0;
+        
+        level.drawMap();
+        
+        userInput = level.sfmlHandler.getInput();
+        
+        if (userInput == 'q')
+            break;
+        else
+            winOrLose = level.iterateMap(userInput);
+        cout << endl << endl;
+        
+        if (winOrLose == 1){
+            level.drawMap();
+            drawWinScreen();
+            break;
         }
-
-        // Clear screen
-        window.clear();
-
-        // Draw the sprite
-        window.draw(sprite);
-
-        // Draw the string
-        window.draw(text);
-
-        // Update the window
-        window.display();
+        else if (winOrLose == 2){
+            level.drawMap();
+            drawLossScreen();
+            break;
+        }
     }
+}
 
-    return EXIT_SUCCESS;
+int main(){
+    bool userCont = true;
+    string levelName = "";
+    bool  restart = false;
+    while (userCont){
+        if (!restart){
+            cout << "Enter the filename for the level you want to load: ";
+            cin >> levelName;
+        }
+        
+        ifstream levelFile;
+        string levelPath = resourcePath() + levelName;
+        levelFile.open(levelPath.c_str());
+        
+        if (!levelFile.is_open()){
+            cout << "Level not found. Make sure you typed it correctly, ";
+            cout << "and that it is in the game's directory." << endl << endl;
+            continue;
+        }
+        
+        levelType level(levelFile);
+        
+        levelFile.close();
+        
+        gameLoop(level);
+        
+        char cUserCont;
+        cout << endl << "Would you like to continue, quit, or restart? "
+        << "(c/q/r): ";
+        cin >> cUserCont;
+        
+        if (cUserCont == 'c' || cUserCont == 'C')
+            userCont = true;
+        else if (cUserCont == 'r' || cUserCont == 'R'){
+            restart = true;
+            userCont = true;
+        }
+        else
+            userCont = false;
+    }
+    
+    return 0;
 }
