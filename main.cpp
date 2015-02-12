@@ -27,6 +27,7 @@
 #include <string>
 #include <cmath>
 
+// Comment this out if you aren't using OS-X.
 #include <ResourcePath.hpp>
 
 #include "levelType.hpp"

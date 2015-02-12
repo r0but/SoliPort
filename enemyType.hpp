@@ -351,6 +351,29 @@ public:
 		isAlive = 0;
 		return;
 	}
+    
+    string getIcon(){
+        switch(heading){
+            case 'l':
+                return "eleft.png";
+                break;
+            
+            case 'u':
+                return "eup.png";
+                break;
+                
+            case 'r':
+                return "eright.png";
+                break;
+                
+            case 'd':
+                return "edown.png";
+                break;
+                
+            default:
+                return "eright.png";
+        };
+    }
 	
 	enemyType(int xSet = 3, int ySet = 3, int headingSet = 'l'){
 		xCoord = xSet;

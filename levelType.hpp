@@ -281,7 +281,8 @@ public:
 	}
 
     levelType(ifstream &levelFile)
-    :sfmlHandler(vertLevelSize, horizLevelSize, numOfEnemies, levelArray[79][24])
+    :sfmlHandler(vertLevelSize, horizLevelSize, numOfEnemies, levelArray,
+                 enemyArray, player)
     {
 		vertLevelSize = 25;
 		horizLevelSize = 80;
