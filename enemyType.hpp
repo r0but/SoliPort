@@ -352,6 +352,10 @@ public:
 		return;
 	}
     
+    char getHeading(){
+        return heading;
+    }
+    
     string getIcon(){
         switch(heading){
             case 'l':

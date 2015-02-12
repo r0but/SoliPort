@@ -31,15 +31,23 @@ class playerType{
 public:
 	void moveUp(){
 		yCoord -= 1;
+        heading = 'u';
+        return;
 	}
 	void moveDown(){
 		yCoord += 1;
+        heading = 'd';
+        return;
 	}
 	void moveLeft(){
 		xCoord -= 1;
+        heading = 'l';
+        return;
 	}
 	void moveRight(){
 		xCoord += 1;
+        heading = 'r';
+        return;
 	}
 	
 	void move(char input, char levelArray[80][25]){
@@ -87,6 +95,10 @@ public:
 		}
         return;
 	}
+    
+    char getHeading(){
+        return heading;
+    }
 	
 	int getAmmoCount(){
 		return ammoLeft;
@@ -103,6 +115,7 @@ private:
 	int yCoord;
 	char icon;
 	int ammoLeft;
+    char heading;
 };
 
 #endif

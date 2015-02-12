@@ -125,6 +125,7 @@ public:
 	
 	bool checkIfWall(int xCoord, int yCoord){
 		// Returns true if tile at given coordinates is a wall
+        // TODO: Return type of wall (intersetctions, corners, etc)
 		
 		if (levelArray[xCoord][yCoord] != '.')
 			return true;
