@@ -9,7 +9,8 @@
 
 class drawType{
 public:
-    drawType()
+    drawType(int nVertLevelSize, int nHorizLevelSize, int nNumOfEnemies,
+             char &nLevelArray)
     :window(sf::VideoMode(320, 240), "Soliton has TILES!!!",
             sf::Style::Default)
     {
@@ -25,7 +26,7 @@ public:
             switch(event.type){
                 case sf::Event::Closed:
                     window.close();
-                    
+                    return 'q';
                     break;
                 
                 case sf::Event::KeyPressed:
@@ -37,6 +38,8 @@ public:
                         return 'a';
                     else if (event.key.code == sf::Keyboard::W)
                         return 'w';
+                    else if (event.key.code == sf::Keyboard::Q)
+                        return 'q';
                     break;
                 
                 default:
@@ -44,9 +47,20 @@ public:
             };
         }
     }
-
+    
+    int drawScreen(){
+        if (window.isOpen()){
+            window.clear();
+        
+            window.display();
+        }
+    }
 
 private:
+    int loadTextures(){
+        return 0;
+    }
+    
     sf::RenderWindow window;
 };
 
