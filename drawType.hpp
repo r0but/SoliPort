@@ -12,9 +12,11 @@ public:
     drawType(int nVertLevelSize, int nHorizLevelSize, int nNumOfEnemies,
              char nLevelArray[80][25], enemyType nEnemyArray[25],
              playerType nPlayer)
-    :window(sf::VideoMode(640, 480), "Soliton has TILES!!! Wait, actually it doesn't.",
+    :window(sf::VideoMode(1280, 720), "Soliton has TILES!!! Wait, actually it doesn't.",
             sf::Style::Default)
     {
+        pixelSize = 16;
+        
         vertLevelSize = nVertLevelSize;
         horizLevelSize = nHorizLevelSize;
         player = nPlayer;
@@ -29,6 +31,10 @@ public:
         
         for (int i = 0; i < 25; i++){
             enemyArray[i] = nEnemyArray[i];
+        }
+        
+        for (int i = 0; i < 4; i++){
+            if (!texture.loadFromFile(""))
         }
         
         return;
@@ -75,18 +81,26 @@ public:
         }
         return;
     }
+    
+    
 
 private:
     int loadTextures(){
         return 0;
     }
     
+    int pixelSize;
     int vertLevelSize;
     int horizLevelSize;
     int numOfEnemies;
     char levelArray[80][25];
-    enemyType enemyArray[25];
     playerType player;
+    
+    enemyType enemyArray[25];
+    
+    sf::Texture texEnemy[4];
+    sf::Texture texPlayer;
+    sf::Texture texLevel[2];
     
     sf::RenderWindow window;
 };
