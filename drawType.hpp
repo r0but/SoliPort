@@ -46,9 +46,9 @@
 
 class drawType{
 public:
-    drawType(int nVertLevelSize, int nHorizLevelSize, int nNumOfEnemies,
-             char nLevelArray[80][25], enemyType nEnemyArray[25],
-             playerType nPlayer)
+    drawType(int const nVertLevelSize, int const nHorizLevelSize,
+             int const nNumOfEnemies, char nLevelArray[80][25],
+             enemyType const nEnemyArray[25], playerType const nPlayer)
     :window(sf::VideoMode(1280, 720), "Soliton has TILES!!! Wait, actually it doesn't.",
             sf::Style::Default)
     {
@@ -56,10 +56,10 @@ public:
         
         // The ~Magic Numbers~ are temporary shit because I JUST WANNA SEE SOME
         // FUCKIN GRAPHICS MAN YEAHHHHHHHHHHHHHHH
-        vertLevelSize = nVertLevelSize;
-        horizLevelSize = nHorizLevelSize;
+        vertLevelSize = 25;
+        horizLevelSize = 80;
         player = nPlayer;
-        numOfEnemies = nNumOfEnemies;
+        numOfEnemies = 25;
         
         for (int y = 0; y < 25; y++){
             for (int x = 0; x < 80; x++){
@@ -94,6 +94,8 @@ public:
                 else{
                     spriteLevel[x][y].setTexture(texLevel[1]);
                 }
+                spriteLevel[x][y].setPosition((float)(x * pixelSize),
+                                              (float)(y * pixelSize));
             }
         }
         
@@ -130,29 +132,7 @@ public:
         }
     }
     
-    int drawScreen(){
-        if (window.isOpen()){
-            int pixelX = 0;
-            int pixelY = 0;
-            
-            window.clear();
-            
-            for (int y = 0; y < vertLevelSize; y++){
-                for (int x = 0; x < horizLevelSize; x++){
-                    pixelX = x * 16;
-                    pixelY = y * 16;
-                    
-                    
-                }
-            }
-            
-            window.display();
-            return 0;
-        }
-        return 0;
-    }
-    
-    int setTextures(){
+    void setTextures(){
         int pX = player.getXCoord();
         int pY = player.getYCoord();
         
@@ -166,7 +146,11 @@ public:
         
         int textureNumber;
         
-        switch (player.getHeading()){
+        int playerHeading = player.getHeading();
+        
+        cout << "playerHeading: " << playerHeading << endl;
+        
+        /*switch (player.getHeading()){
             case 'r':
                 textureNumber = 0;
                 break;
@@ -183,7 +167,7 @@ public:
                 textureNumber = 0;
                 cout << "Error setting correct player texture\n";
                 break;
-        };
+        };*/
         
         spritePlayer.setTexture(texPlayer[textureNumber]);
         spritePlayer.setPosition((float)(pX * pixelSize),
@@ -213,15 +197,37 @@ public:
             }
             
             spriteEnemy[i].setTexture(texEnemy[textureNumber]);
-            spriteEnemy[i].setPosition((float)enemyXCoords[i],
-                                       (float)enemyYCoords[i]);
+            spriteEnemy[i].setPosition((float)(enemyXCoords[i] * 16),
+                                       (float)(enemyYCoords[i] * 16));
             
         }
         
         // Drawing the level - make sure to only redraw a sprite or re-set a
         // texture when it needs to change, players and enemies excluded.
+    }
+    
+    int drawScreen(){
+        setTextures();
         
-        
+        if (window.isOpen()){
+            window.clear();
+            
+            for (int y = 0; y < vertLevelSize; y++){
+                for (int x = 0; x < horizLevelSize; x++){
+                    window.draw(spriteLevel[x][y]);
+                }
+            }
+            
+            window.draw(spritePlayer);
+            
+            for (int i = 0; i < numOfEnemies; i++){
+                window.draw(spriteEnemy[i]);
+            }
+            
+            window.display();
+            return 0;
+        }
+        return 0;
     }
     
     

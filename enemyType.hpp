@@ -36,19 +36,19 @@ class enemyType{
 public:
 	void moveUp(){
 		yCoord--;
-		heading = 'u';
+		heading = 1;
 	}
 	void moveDown(){
 		yCoord++;
-		heading = 'd';
+		heading = 3;
 	}
 	void moveLeft(){
 		xCoord--;
-		heading = 'l';
+		heading = 2;
 	}
 	void moveRight(){
 		xCoord++;
-		heading = 'r';
+		heading = 0;
 	}
 	int getXCoord(){
 		return xCoord;
@@ -60,13 +60,13 @@ public:
 		if (!checkIfAlive()){
 			return 'x';
 		}
-		if (heading == 'l')
+		if (heading == 2)
 			return '>';
-		else if (heading == 'r')
+		else if (heading == 0)
 			return '<';
-		else if (heading == 'u')
+		else if (heading == 1)
 			return 'v';
-		else if (heading == 'd')
+		else if (heading == 3)
 			return '^';
 		else
 			return 'O';
@@ -247,25 +247,25 @@ public:
 		// All this sight code is hacky garbage. 
 		// I'm sorry to whoever reads this.
 		switch(heading){
-			case 'r':
+			case 0:
 				if (checkRight(levelArray, pX, pY))
 					return 1;
 				else
 					return 0;
 				break;
-			case 'l':
+			case 2:
 				if (checkLeft(levelArray, pX, pY))
 					return 1;
 				else
 					return 0;
 				break;
-			case 'd':
+			case 3:
 				if (checkDown(levelArray, pX, pY))
 					return 1;
 				else
 					return 0;
 				break;
-			case 'u':
+			case 1:
 				if (checkUp(levelArray, pX, pY))
 					return 1;
 				else
@@ -302,19 +302,20 @@ public:
 		if (action == 'l'){
 			switch (direction){
 				case 'l':
-					heading = 'l';
+					heading = 2;
 					break;
 				case 'r':
-					heading = 'r';
+					heading = 0;
 					break;
 				case 'u':
-					heading = 'u';
+					heading = 1;
 					break;
 				case 'd':
-					heading = 'd';
+					heading = 3;
 					break;
 				default:
 					cout << "OH GOD";
+                    heading = 0;
 			}
 		}	
 		if (patrolPath[pathLoc + 1].action == '$')
@@ -352,7 +353,7 @@ public:
 		return;
 	}
     
-    char getHeading(){
+    int getHeading(){
         return heading;
     }
     
@@ -379,10 +380,9 @@ public:
         };
     }
 	
-	enemyType(int xSet = 3, int ySet = 3, int headingSet = 'l'){
+	enemyType(int xSet = 3, int ySet = 3){
 		xCoord = xSet;
 		yCoord = ySet;
-		headingSet = 'l';
 		pathLoc = 0;
 		isAlive = 1;
 		for (int i = 0; i < 100; i++){

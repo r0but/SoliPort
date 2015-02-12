@@ -31,22 +31,22 @@ class playerType{
 public:
 	void moveUp(){
 		yCoord -= 1;
-        heading = 'u';
+        heading = 1;
         return;
 	}
 	void moveDown(){
 		yCoord += 1;
-        heading = 'd';
+        heading = 3;
         return;
 	}
 	void moveLeft(){
 		xCoord -= 1;
-        heading = 'l';
+        heading = 2;
         return;
 	}
 	void moveRight(){
 		xCoord += 1;
-        heading = 'r';
+        heading = 0;
         return;
 	}
 	
@@ -96,7 +96,7 @@ public:
         return;
 	}
     
-    char getHeading(){
+    int getHeading(){
         return heading;
     }
 	
@@ -109,13 +109,14 @@ public:
 		yCoord = ySet;
 		ammoLeft = ammo;
 		icon = '@';
+        heading = 0;
 	}	
 private:
 	int xCoord;
 	int yCoord;
 	char icon;
 	int ammoLeft;
-    char heading;
+    int heading;
 };
 
 #endif
