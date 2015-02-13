@@ -31,8 +31,8 @@
 ResourcePath.mm
 ResourcePath.hpp
 
-# More OS-X horse shit
-*.DS_Store
+# More OS-X stuff
+.DS_Store
 
 # XCode stuff
 *.plist
