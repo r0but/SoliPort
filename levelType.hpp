@@ -299,7 +299,7 @@ public:
 		buildLevel(levelFile);
         
         sfmlHandler = new drawType(vertLevelSize, horizLevelSize, numOfEnemies,
-                                   levelArray, *enemyArray, *player);
+                                   levelArray, enemyArray, player);
            
         return;
 	}

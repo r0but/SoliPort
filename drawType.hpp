@@ -48,14 +48,12 @@ class drawType{
 public:
     drawType(int const nVertLevelSize, int const nHorizLevelSize,
              int const nNumOfEnemies, char nLevelArray[80][25],
-             enemyType nEnemyArray[25], playerType &nPlayer)
+             enemyType *nEnemyArray[25], playerType *nPlayer)
     :window(sf::VideoMode(1280, 720), "Soliton has TILES!!! At least, technically, it does.",
             sf::Style::Default)
     {
         pixelSize = 16;
         
-        // The ~Magic Numbers~ are temporary shit because I JUST WANNA SEE SOME
-        // FUCKIN GRAPHICS MAN YEAHHHHHHHHHHHHHHH
         vertLevelSize = nVertLevelSize;
         horizLevelSize = nHorizLevelSize;
         player = nPlayer;
@@ -139,20 +137,20 @@ public:
     }
     
     void setTextures(){
-        int pX = player.getXCoord();
-        int pY = player.getYCoord();
+        int pX = player->getXCoord();
+        int pY = player->getYCoord();
         
         int enemyXCoords[numOfEnemies];
         int enemyYCoords[numOfEnemies];
         
         for (int i = 0; i < numOfEnemies; i++){
-            enemyXCoords[i] = enemyArray[i].getXCoord();
-            enemyYCoords[i] = enemyArray[i].getYCoord();
+            enemyXCoords[i] = enemyArray[i]->getXCoord();
+            enemyYCoords[i] = enemyArray[i]->getYCoord();
         }
         
         int textureNumber;
         
-        int playerHeading = player.getHeading();
+        int playerHeading = player->getHeading();
         
         cout << "playerHeading: " << playerHeading << endl;
         
@@ -180,7 +178,7 @@ public:
                                  (float)(pY * pixelSize));
         
         for (int i = 0; i < numOfEnemies; i++){
-            int enemyHeading = enemyArray[i].getHeading();
+            int enemyHeading = enemyArray[i]->getHeading();
             
             cout << "enemyHeading: " << enemyHeading << endl;
             
@@ -243,11 +241,11 @@ private:
     int horizLevelSize;
     int numOfEnemies;
     char levelArray[80][25];
-    playerType player;
+    playerType *player;
     
     sf::Sprite spriteArray;
     
-    enemyType enemyArray[25];
+    enemyType *enemyArray[25];
     
     // left right up down
     sf::Texture texEnemy[4];
