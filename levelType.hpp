@@ -37,25 +37,52 @@ class levelType{
 public:
 	int iterateMap(char input){
 	
+        int pX = player->getXCoord();
+        int pY = player->getYCoord();
+        
 		if (input == 'a' || input == 'w' || input == 's' || input == 'd'){
-			player->move(input, levelArray);
+            switch(input){
+                case 'd':
+                    pX += 1;
+                    break;
+                
+                case 'w':
+                    pY -= 1;
+                    break;
+                    
+                case 'a':
+                    pX -= 1;
+                    break;
+                    
+                case 's':
+                    pY += 1;
+                    break;
+            };
+            bool killedEnemy = false;
+            
+            for (int i = 0; i < numOfEnemies; i++){
+                
+                if (enemyArray[i]->getXCoord() == pX &&
+                    enemyArray[i]->getYCoord() == pY &&
+                    enemyArray[i]->checkIfAlive()){
+                    
+                    enemyArray[i]->killEnemy();
+                    killedEnemy = true;
+                    
+                }
+            }
+            if (!killedEnemy){
+                player->move(input, levelArray);
+            }
 		}
 		if (input == 'f'){
 			playerShoot();
 		}
 		
-		int pX = player->getXCoord();
-		int pY = player->getYCoord();
+		pX = player->getXCoord();
+		pY = player->getYCoord();
 		
-		for (int i = 0; i < numOfEnemies; i++){
 		
-			if (enemyArray[i]->getXCoord() == pX &&
-					enemyArray[i]->getYCoord() == pY){
-					
-				enemyArray[i]->killEnemy();
-				
-			}
-		}
 		
 		for (int i = 0; i < numOfEnemies; i++){
 			if (enemyArray[i]->checkIfAlive()){
@@ -282,7 +309,13 @@ public:
         return;
 	}
     
-    //~levelType(){}
+    ~levelType(){
+        delete player;
+        for (int i = 0; i < 25; i++){
+            delete enemyArray[i];
+        }
+        delete sfmlHandler;
+    }
 
     levelType(ifstream &levelFile)
     {
