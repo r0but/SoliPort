@@ -359,19 +359,19 @@ public:
     
     string getIcon(){
         switch(heading){
-            case 'l':
-                return "eleft.png";
+            case 0:
+                return "eright.png";
                 break;
             
-            case 'u':
+            case 1:
                 return "eup.png";
                 break;
                 
-            case 'r':
-                return "eright.png";
+            case 2:
+                return "eleft.png";
                 break;
                 
-            case 'd':
+            case 3:
                 return "edown.png";
                 break;
                 
@@ -380,7 +380,7 @@ public:
         };
     }
 	
-	enemyType(int xSet = 3, int ySet = 3){
+    enemyType(int xSet = 3, int ySet = 3, int heading = 0){
 		xCoord = xSet;
 		yCoord = ySet;
 		pathLoc = 0;
@@ -396,7 +396,7 @@ private:
 	int yCoord;
 	actionType patrolPath[100];
 	int pathLoc;
-	char heading;
+	int heading;
 	bool isAlive;
 };
 

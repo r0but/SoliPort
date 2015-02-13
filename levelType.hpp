@@ -38,35 +38,35 @@ public:
 	int iterateMap(char input){
 	
 		if (input == 'a' || input == 'w' || input == 's' || input == 'd'){
-			player.move(input, levelArray);
+			player->move(input, levelArray);
 		}
 		if (input == 'f'){
 			playerShoot();
 		}
 		
-		int pX = player.getXCoord();
-		int pY = player.getYCoord();
+		int pX = player->getXCoord();
+		int pY = player->getYCoord();
 		
 		for (int i = 0; i < numOfEnemies; i++){
 		
-			if (enemyArray[i].getXCoord() == pX && 
-					enemyArray[i].getYCoord() == pY){
+			if (enemyArray[i]->getXCoord() == pX &&
+					enemyArray[i]->getYCoord() == pY){
 					
-				enemyArray[i].killEnemy();
+				enemyArray[i]->killEnemy();
 				
 			}
 		}
 		
 		for (int i = 0; i < numOfEnemies; i++){
-			if (enemyArray[i].checkIfAlive()){
-				enemyArray[i].moveAlongPath();
+			if (enemyArray[i]->checkIfAlive()){
+				enemyArray[i]->moveAlongPath();
 			}
 		}
 		
 		for (int i = 0; i < numOfEnemies; i++){
 			bool isCaught = 0;
-			if (enemyArray[i].checkIfAlive()){
-				isCaught = enemyArray[i].checkForPlayer(levelArray, 
+			if (enemyArray[i]->checkIfAlive()){
+				isCaught = enemyArray[i]->checkForPlayer(levelArray,
 															 pX, pY);
 			}
 			if (isCaught)
@@ -86,8 +86,8 @@ public:
 		
         for (int y = 0; y < vertLevelSize; y++){
 			for (int x = 0; x < horizLevelSize; x++){
-				if (player.getYCoord() == y && player.getXCoord() == x)
-					cout << player.getIcon();
+				if (player->getYCoord() == y && player->getXCoord() == x)
+					cout << player->getIcon();
 				else if (levelArray[x][y] == '%'){
 					cout << endl;
 					break;
@@ -101,9 +101,9 @@ public:
 				// isEnemyHere to whichEnemyHere()
 				else if (whichEnemyHere(x, y) != -1){
 					for (int i = 0; i < numOfEnemies; i++){
-						if (enemyArray[i].getXCoord() == x &&
-								enemyArray[i].getYCoord() == y){
-							cout << enemyArray[i].toDisplay();
+						if (enemyArray[i]->getXCoord() == x &&
+								enemyArray[i]->getYCoord() == y){
+							cout << enemyArray[i]->toDisplay();
 						}
 					}
 				}
@@ -135,8 +135,8 @@ public:
 
 	int whichEnemyHere(int x, int y){
 		for (int i = 0; i < numOfEnemies; i++){
-			if (enemyArray[i].getXCoord() == x && 
-					enemyArray[i].getYCoord() == y){
+			if (enemyArray[i]->getXCoord() == x &&
+					enemyArray[i]->getYCoord() == y){
 				return i;				
 			}
 		}
@@ -148,7 +148,7 @@ public:
 			return;
 
 		for (int i = 0; i < numOfEnemies; i++){
-			enemyArray[i].loadPatrolPath(levelFile);
+			enemyArray[i]->loadPatrolPath(levelFile);
 			if (levelFile.peek() == '*')
 				break;
 		}
@@ -156,14 +156,14 @@ public:
 	}
 	
 	void playerShoot(){
-		if (player.getAmmoCount() > 0){
+		if (player->getAmmoCount() > 0){
 			return;
 		}
 		
 		int xFromPlayer;
 		int yFromPlayer;
-		int playerX = player.getXCoord();
-		int playerY = player.getYCoord();
+		int playerX = player->getXCoord();
+		int playerY = player->getYCoord();
 		double slope;
 		cout << "What tile, relative to you, do you want to shoot? ";
 		cin >> xFromPlayer;
@@ -178,8 +178,8 @@ public:
 		
 		int invSlope = 1.0 / slope;
 		
-		int finalX = player.getXCoord() + xFromPlayer;
-		int finalY = player.getYCoord() + yFromPlayer;
+		int finalX = player->getXCoord() + xFromPlayer;
+		int finalY = player->getYCoord() + yFromPlayer;
 		
 		int enemyToKill = whichEnemyHere(finalX, finalY);
 		
@@ -200,10 +200,10 @@ public:
 		}
 		
 		if (!isWall){
-			enemyArray[enemyToKill].killEnemy();
+			enemyArray[enemyToKill]->killEnemy();
 		}
 		
-		player.decrementAmmoCount();
+		player->decrementAmmoCount();
 		
 		return;
 	}
@@ -236,26 +236,26 @@ public:
 				
 				switch (currentTile){
 					case '@':
-						player.setPosition(x, y);
+						player->setPosition(x, y);
 						levelArray[x][y] = '.';
 						break;
 					case '>':
-						enemyArray[numOfEnemies].setPosition(x, y, 'l');
+						enemyArray[numOfEnemies]->setPosition(x, y, 2);
 						numOfEnemies++;
 						levelArray[x][y] = '.';
 						break;
 					case '<':
-						enemyArray[numOfEnemies].setPosition(x, y, 'r');
+						enemyArray[numOfEnemies]->setPosition(x, y, 0);
 						numOfEnemies++;
 						levelArray[x][y] = '.';
 						break;
 					case '^':
-						enemyArray[numOfEnemies].setPosition(x, y, 'd');
+						enemyArray[numOfEnemies]->setPosition(x, y, 3);
 						numOfEnemies++;
 						levelArray[x][y] = '.';
 						break;
 					case 'v':
-						enemyArray[numOfEnemies].setPosition(x, y, 'u');
+						enemyArray[numOfEnemies]->setPosition(x, y, 1);
 						numOfEnemies++;
 						levelArray[x][y] = '.';
 						break;
@@ -274,32 +274,43 @@ public:
 					break;
 			}		
 		}
+        
 		loadEnemyPaths(levelFile);
 		int ammoCount = levelFile.get();
-		player.setAmmoCount(ammoCount);
-        
-        return;
-	}
-
-    levelType(ifstream &levelFile)
-    :sfmlHandler(vertLevelSize, horizLevelSize, numOfEnemies, levelArray,
-                 enemyArray, player)
-    {
-		vertLevelSize = 25;
-		horizLevelSize = 80;
-		numOfEnemies = 0;
-		buildLevel(levelFile);
+		player->setAmmoCount(ammoCount);
         
         return;
 	}
     
-    drawType sfmlHandler;
+    //~levelType(){}
+
+    levelType(ifstream &levelFile)
+    {
+		vertLevelSize = 25;
+		horizLevelSize = 80;
+		numOfEnemies = 0;
+        
+        for (int i = 0; i < 25; i++){
+            enemyArray[i] = new enemyType(3, 3, 0);
+        }
+        
+        player = new playerType(10, 10, 0);
+        
+		buildLevel(levelFile);
+        
+        sfmlHandler = new drawType(vertLevelSize, horizLevelSize, numOfEnemies,
+                                   levelArray, *enemyArray, *player);
+           
+        return;
+	}
+    
+    drawType *sfmlHandler;
 private:
 	int vertLevelSize;
 	int horizLevelSize;
 	int numOfEnemies;
-	playerType player;
-	enemyType enemyArray[25];
+	playerType *player;
+	enemyType *enemyArray[25];
 
 	char levelArray[80][25];
 };

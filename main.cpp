@@ -54,9 +54,10 @@ void gameLoop(levelType& level){
         int winOrLose = 0;
         
         level.drawMap();
-        level.sfmlHandler.drawScreen();
+        level.sfmlHandler->setTextures();
+        level.sfmlHandler->drawScreen();
         
-        userInput = level.sfmlHandler.getInput();
+        userInput = level.sfmlHandler->getInput();
         
         if (userInput == 'q')
             break;
@@ -106,7 +107,7 @@ int main(){
         char cUserCont;
         cout << endl << "Would you like to continue, quit, or restart? "
         << "(c/q/r)";
-        userCont = level.sfmlHandler.getInput();
+        userCont = level.sfmlHandler->getInput();
         
         if (cUserCont == 'c' || cUserCont == 'C')
             userCont = true;

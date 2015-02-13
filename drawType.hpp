@@ -48,18 +48,18 @@ class drawType{
 public:
     drawType(int const nVertLevelSize, int const nHorizLevelSize,
              int const nNumOfEnemies, char nLevelArray[80][25],
-             enemyType const nEnemyArray[25], playerType const nPlayer)
-    :window(sf::VideoMode(1280, 720), "Soliton has TILES!!! Wait, actually it doesn't.",
+             enemyType nEnemyArray[25], playerType &nPlayer)
+    :window(sf::VideoMode(1280, 720), "Soliton has TILES!!! At least, technically, it does.",
             sf::Style::Default)
     {
         pixelSize = 16;
         
         // The ~Magic Numbers~ are temporary shit because I JUST WANNA SEE SOME
         // FUCKIN GRAPHICS MAN YEAHHHHHHHHHHHHHHH
-        vertLevelSize = 25;
-        horizLevelSize = 80;
+        vertLevelSize = nVertLevelSize;
+        horizLevelSize = nHorizLevelSize;
         player = nPlayer;
-        numOfEnemies = 25;
+        numOfEnemies = nNumOfEnemies;
         
         for (int y = 0; y < 25; y++){
             for (int x = 0; x < 80; x++){
@@ -73,15 +73,21 @@ public:
         }
         
         for (int i = 0; i < 4; i++){
-            if (!texPlayer[i].loadFromFile( std::to_string(i) + ".png")){
+            if (!texPlayer[i].loadFromFile( resourcePath() + std::to_string(i) + ".png")){
                 cout << to_string(i) << " player texture failed to load\n";
             }
         }
         
         for (int i = 4; i < 8; i++){
          
-            if (!texEnemy[i - 4].loadFromFile( std::to_string(i) + ".png")){
+            if (!texEnemy[i - 4].loadFromFile( resourcePath() + std::to_string(i) + ".png")){
                 cout << to_string(i) << " enemy texture failed to load\n";
+            }
+        }
+        
+        for (int i = 8; i < 10; i++){
+            if (!texLevel[i - 8].loadFromFile( resourcePath() + std::to_string(i) + ".png")){
+                cout << to_string(i) << " level texture failed to load\n";
             }
         }
         
@@ -138,11 +144,11 @@ public:
         
         int enemyXCoords[numOfEnemies];
         int enemyYCoords[numOfEnemies];
+        
         for (int i = 0; i < numOfEnemies; i++){
             enemyXCoords[i] = enemyArray[i].getXCoord();
             enemyYCoords[i] = enemyArray[i].getYCoord();
         }
-        
         
         int textureNumber;
         
@@ -150,44 +156,45 @@ public:
         
         cout << "playerHeading: " << playerHeading << endl;
         
-        /*switch (player.getHeading()){
-            case 'r':
+        switch (playerHeading){
+            case 0:
                 textureNumber = 0;
                 break;
-            case 'u':
+            case 1:
                 textureNumber = 1;
                 break;
-            case 'l':
+            case 2:
                 textureNumber = 2;
                 break;
-            case 'd':
+            case 3:
                 textureNumber = 3;
                 break;
             default:
                 textureNumber = 0;
                 cout << "Error setting correct player texture\n";
                 break;
-        };*/
+        };
         
         spritePlayer.setTexture(texPlayer[textureNumber]);
         spritePlayer.setPosition((float)(pX * pixelSize),
                                  (float)(pY * pixelSize));
         
-        
-        
         for (int i = 0; i < numOfEnemies; i++){
+            int enemyHeading = enemyArray[i].getHeading();
             
-            switch (enemyArray[i].getHeading()){
-                case 'r':
+            cout << "enemyHeading: " << enemyHeading << endl;
+            
+            switch (enemyHeading){
+                case 0:
                     textureNumber = 0;
                     break;
-                case 'u':
+                case 1:
                     textureNumber = 1;
                     break;
-                case 'l':
+                case 2:
                     textureNumber = 2;
                     break;
-                case 'd':
+                case 3:
                     textureNumber = 3;
                     break;
                 default:
@@ -207,13 +214,11 @@ public:
     }
     
     int drawScreen(){
-        setTextures();
-        
         if (window.isOpen()){
             window.clear();
             
-            for (int y = 0; y < vertLevelSize; y++){
-                for (int x = 0; x < horizLevelSize; x++){
+            for (int y = 0; y < 25; y++){
+                for (int x = 0; x < 80; x++){
                     window.draw(spriteLevel[x][y]);
                 }
             }
@@ -231,11 +236,7 @@ public:
     }
     
     
-
 private:
-    int loadTextures(){
-        return 0;
-    }
     
     int pixelSize;
     int vertLevelSize;
