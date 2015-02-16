@@ -82,11 +82,16 @@ int main(){
     bool userCont = true;
     string levelName = "";
     bool  restart = false;
+    int currentLevel = 1;
     while (userCont){
         if (!restart){
             cout << "Enter the filename for the level you want to load: ";
-            cin >> levelName;
+            //cin >> levelName;
         }
+        
+        // temporary to string the levels together
+        levelName = "level" + to_string(currentLevel) + ".slv";
+        currentLevel++;
         
         ifstream levelFile;
         string levelPath = resourcePath() + levelName;
@@ -95,7 +100,7 @@ int main(){
         if (!levelFile.is_open()){
             cout << "Level not found. Make sure you typed it correctly, ";
             cout << "and that it is in the game's directory." << endl << endl;
-            continue;
+            break;
         }
         
         levelType level(levelFile);
@@ -109,14 +114,12 @@ int main(){
         << "(c/q/r)";
         userCont = level.sfmlHandler->getInput();
         
-        if (cUserCont == 'c' || cUserCont == 'C')
-            userCont = true;
-        else if (cUserCont == 'r' || cUserCont == 'R'){
-            restart = true;
-            userCont = true;
+        if (cUserCont == 'q' || cUserCont == 'Q'){
+            break;
         }
-        else
-            userCont = false;
+        else {
+            continue;
+        }
     }
     
     return 0;

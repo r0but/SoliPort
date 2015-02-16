@@ -52,7 +52,7 @@ public:
     :window(sf::VideoMode(1280, 720), "Soliton has TILES!!! At least, technically, it does.",
             sf::Style::Default)
     {
-        pixelSize = 16;
+        pixelSize = 32;
         
         vertLevelSize = nVertLevelSize;
         horizLevelSize = nHorizLevelSize;
@@ -202,8 +202,8 @@ public:
             }
             
             spriteEnemy[i].setTexture(texEnemy[textureNumber]);
-            spriteEnemy[i].setPosition((float)(enemyXCoords[i] * 16),
-                                       (float)(enemyYCoords[i] * 16));
+            spriteEnemy[i].setPosition((float)(enemyXCoords[i] * pixelSize),
+                                       (float)(enemyYCoords[i] * pixelSize));
             
         }
         
