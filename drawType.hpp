@@ -89,11 +89,22 @@ public:
             }
         }
         
+        if (!enemyCorpse.loadFromFile( resourcePath() + "11.png")){
+            cout << "corpse texture failed to load\n";
+        }
+        
+        if (!endOfLevel.loadFromFile( resourcePath() + "10.png")){
+            cout << "end of level texture failed to load\n";
+        }
+        
         // Setting tile textures
         for (int y = 0; y < 25; y++){
             for (int x = 0; x < 80; x++){
                 if (levelArray[x][y] == '.'){
                     spriteLevel[x][y].setTexture(texLevel[0]);
+                }
+                else if (levelArray[x][y] == 'E'){
+                    spriteLevel[x][y].setTexture(endOfLevel);
                 }
                 else{
                     spriteLevel[x][y].setTexture(texLevel[1]);
@@ -182,6 +193,15 @@ public:
             
             cout << "enemyHeading: " << enemyHeading << endl;
             
+            if (!enemyArray[i]->checkIfAlive()){
+                spriteEnemy[i].setTexture(enemyCorpse);
+                spriteEnemy[i].setPosition((float)(enemyXCoords[i] * pixelSize),
+                                           (float)(enemyYCoords[i] * pixelSize));
+                
+                continue;
+            }
+            
+            
             switch (enemyHeading){
                 case 0:
                     textureNumber = 0;
@@ -249,6 +269,8 @@ private:
     
     // left right up down
     sf::Texture texEnemy[4];
+    sf::Texture enemyCorpse;
+    sf::Texture endOfLevel;
     sf::Texture texPlayer[4];
     
     // floor wall
