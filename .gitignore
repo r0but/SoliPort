@@ -27,10 +27,6 @@
 *.out
 *.app
 
-# OS-X specific helpers
-ResourcePath.mm
-ResourcePath.hpp
-
 # More OS-X stuff
 .DS_Store
 
