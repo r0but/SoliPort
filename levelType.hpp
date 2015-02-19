@@ -305,17 +305,39 @@ public:
 		loadEnemyPaths(levelFile);
 		int ammoCount = levelFile.get();
 		player->setAmmoCount(ammoCount);
-        
+
         return;
 	}
+
+    int reInitialize(ifstream &levelFile){
+        vertLevelSize = 25;
+        horizLevelSize = 80;
+        numOfEnemies = 0;
+        
+        for (int i = 0; i < 25; i++){
+            enemyArray[i] = new enemyType(3, 3, 0);
+        }
+        
+        player = new playerType(10, 10, 0);
+        
+        buildLevel(levelFile);
+        
+        sfmlHandler->reInitialize(vertLevelSize, horizLevelSize, numOfEnemies,
+                                  levelArray, enemyArray, player);
+        
+        return 0;
+    }
     
+    /*
     ~levelType(){
         delete player;
         for (int i = 0; i < 25; i++){
             delete enemyArray[i];
         }
         delete sfmlHandler;
+        return;
     }
+    */
 
     levelType(ifstream &levelFile)
     {

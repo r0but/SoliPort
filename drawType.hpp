@@ -117,6 +117,72 @@ public:
         return;
     }
     
+    // Re-initializes level without closing and opening SFML window
+    int reInitialize(int const nVertLevelSize, int const nHorizLevelSize,
+                     int const nNumOfEnemies, char nLevelArray[80][25],
+                     enemyType *nEnemyArray[25], playerType *nPlayer){
+        vertLevelSize = nVertLevelSize;
+        horizLevelSize = nHorizLevelSize;
+        player = nPlayer;
+        numOfEnemies = nNumOfEnemies;
+        
+        for (int y = 0; y < 25; y++){
+            for (int x = 0; x < 80; x++){
+                levelArray[x][y] = nLevelArray[x][y];
+            }
+            
+        }
+        
+        for (int i = 0; i < 25; i++){
+            enemyArray[i] = nEnemyArray[i];
+        }
+        
+        for (int i = 0; i < 4; i++){
+            if (!texPlayer[i].loadFromFile( resourcePath() + std::to_string(i) + ".png" )){
+                cout << to_string(i) << " player texture failed to load\n";
+            }
+        }
+        
+        for (int i = 4; i < 8; i++){
+            
+            if (!texEnemy[i - 4].loadFromFile( resourcePath() + std::to_string(i) + ".png" )){
+                cout << to_string(i) << " enemy texture failed to load\n";
+            }
+            
+        }
+        
+        for (int i = 8; i < 10; i++){
+            if (!texLevel[i - 8].loadFromFile( resourcePath() + std::to_string(i) + ".png" )){
+                cout << to_string(i) << " level texture failed to load\n";
+            }
+        }
+        
+        if (!enemyCorpse.loadFromFile( resourcePath() + "11.png")){
+            cout << "corpse texture failed to load\n";
+        }
+        
+        if (!endOfLevel.loadFromFile( resourcePath() + "10.png")){
+            cout << "end of level texture failed to load\n";
+        }
+        
+        // Setting tile textures
+        for (int y = 0; y < 25; y++){
+            for (int x = 0; x < 80; x++){
+                if (levelArray[x][y] == '.'){
+                    spriteLevel[x][y].setTexture(texLevel[0]);
+                }
+                else if (levelArray[x][y] == 'E'){
+                    spriteLevel[x][y].setTexture(endOfLevel);
+                }
+                else{
+                    spriteLevel[x][y].setTexture(texLevel[1]);
+                }
+                spriteLevel[x][y].setPosition((float)(x * pixelSize),
+                                              (float)(y * pixelSize));
+            }
+        }
+    }
+    
     char getInput(){
         sf::Event event;
         
@@ -241,11 +307,11 @@ public:
                 }
             }
             
-            window.draw(spritePlayer);
-            
             for (int i = 0; i < numOfEnemies; i++){
                 window.draw(spriteEnemy[i]);
             }
+            
+            window.draw(spritePlayer);
             
             window.display();
             return 0;

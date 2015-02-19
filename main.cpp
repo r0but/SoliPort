@@ -46,7 +46,7 @@ void drawLossScreen(){
     cout << endl << "You lose! Good day, sir." << endl;
 }
 
-void gameLoop(levelType& level){
+void gameLoop(levelType level){
     char userInput;
     while(true){
         
@@ -82,8 +82,9 @@ int main(){
     bool userCont = true;
     string levelName = "";
     bool  restart = false;
-    int currentLevel = 1;
-    while (userCont){
+    int numOfLevels = 2;
+    levelType* level;
+    for (int currentLevel = 1; currentLevel <= numOfLevels; ++currentLevel){
         if (!restart){
             cout << "Enter the filename for the level you want to load: ";
             //cin >> levelName;
@@ -91,7 +92,6 @@ int main(){
         
         // temporary to string the levels together
         levelName = "level" + to_string(currentLevel) + ".slv";
-        currentLevel++;
         
         ifstream levelFile;
         string levelPath = resourcePath() + levelName;
@@ -103,16 +103,21 @@ int main(){
             break;
         }
         
-        levelType level(levelFile);
+        if (currentLevel == 1){
+            level = new levelType(levelFile);
+        }
+        else{
+            level->reInitialize(levelFile);
+        };
         
         levelFile.close();
         
-        gameLoop(level);
+        gameLoop(*level);
         
         char cUserCont;
         cout << endl << "Would you like to continue, quit, or restart? "
         << "(c/q/r)";
-        userCont = level.sfmlHandler->getInput();
+        userCont = level->sfmlHandler->getInput();
         
         if (cUserCont == 'q' || cUserCont == 'Q'){
             break;
