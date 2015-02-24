@@ -27,8 +27,11 @@
 #include <string>
 #include <cmath>
 
-// Comment this out if you aren't using OS-X.
-#include <ResourcePath.hpp>
+#ifdef _WIN32
+#include "winResourcePath.hpp"
+#elif __APPLE__
+#include "ResourcePath.hpp"
+#endif
 
 #include "levelType.hpp"
 
