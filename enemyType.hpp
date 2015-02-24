@@ -56,7 +56,6 @@ public:
 	int getYCoord(){
 		return yCoord;
 	}
-    
 	char toDisplay(){
 		if (!checkIfAlive()){
 			return 'x';
