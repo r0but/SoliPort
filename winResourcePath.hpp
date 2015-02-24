@@ -1,3 +1,3 @@
 std::string resourcePath(){
-    return "resource\\";
+    return "Resources\\";
 }
