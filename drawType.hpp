@@ -213,6 +213,12 @@ public:
         }
     }
     
+    int drawMenu(){
+        
+        
+        return 0;
+    }
+    
     void setTextures(){
         int pX = player->getXCoord();
         int pY = player->getYCoord();
@@ -321,7 +327,6 @@ public:
     
     
 private:
-    
     int pixelSize;
     int vertLevelSize;
     int horizLevelSize;
