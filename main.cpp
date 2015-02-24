@@ -27,6 +27,14 @@
 #include <string>
 #include <cmath>
 
+<<<<<<< HEAD
+#ifdef _WIN32
+//define something for Windows (32-bit and 64-bit, this part is common)
+#include "winResourcePath.hpp"
+#elif __APPLE__
+#include "ResourcePath.hpp"
+#endif
+=======
 #include <SFML/OpenGL.hpp>
 
 #ifdef _WIN32
@@ -37,6 +45,7 @@
     #include "ResourcePath.hpp"
 #endif
 
+>>>>>>> master
 
 #include "levelType.hpp"
 
@@ -54,7 +63,7 @@ void drawLossScreen(){
     cout << endl << "You lose! Good day, sir." << endl;
 }
 
-void gameLoop(levelType& level){
+void gameLoop(levelType level){
     char userInput;
     while(true){
 
@@ -90,8 +99,9 @@ int main(){
     bool userCont = true;
     string levelName = "";
     bool  restart = false;
-    int currentLevel = 1;
-    while (userCont){
+    int numOfLevels = 2;
+    levelType* level;
+    for (int currentLevel = 1; currentLevel <= numOfLevels; ++currentLevel){
         if (!restart){
             cout << "Enter the filename for the level you want to load: ";
             //cin >> levelName;
@@ -99,7 +109,10 @@ int main(){
 
         // temporary to string the levels together
         levelName = "level" + to_string(currentLevel) + ".slv";
+<<<<<<< HEAD
+=======
         currentLevel++;
+>>>>>>> master
 
         ifstream levelFile;
         string levelPath = resourcePath() + levelName;
@@ -114,16 +127,33 @@ int main(){
             break;
         }
 
+<<<<<<< HEAD
+        if (currentLevel == 1){
+            level = new levelType(levelFile);
+        }
+        else{
+            level->reInitialize(levelFile);
+        };
+
+        levelFile.close();
+
+        gameLoop(*level);
+=======
         levelType level(levelFile);
 
         levelFile.close();
 
         gameLoop(level);
+>>>>>>> master
 
         char cUserCont;
         cout << endl << "Would you like to continue, quit, or restart? "
         << "(c/q/r)";
+<<<<<<< HEAD
+        userCont = level->sfmlHandler->getInput();
+=======
         cUserCont = level.sfmlHandler->getInput();
+>>>>>>> master
 
         if (cUserCont == 'q' || cUserCont == 'Q'){
             break;
