@@ -50,7 +50,11 @@ void drawLossScreen(){
     cout << endl << "You lose! Good day, sir." << endl;
 }
 
-void gameLoop(levelType level){
+// Exit codes:
+// 0: Success
+// 1: Error
+// 2: Shut down everything
+int gameLoop(levelType level){
     char userInput;
     while(true){
 
@@ -65,21 +69,29 @@ void gameLoop(levelType level){
 
         if (userInput == 'q')
             break;
+        else if (userInput == '!'){
+            return 2;
+        }
         else
             winOrLose = level.iterateMap(userInput);
         cout << endl << endl;
 
         if (winOrLose == 1){
             level.drawMap();
+            level.sfmlHandler->setTextures();
+            level.sfmlHandler->drawScreen();
             drawWinScreen();
             break;
         }
         else if (winOrLose == 2){
             level.drawMap();
+            level.sfmlHandler->setTextures();
+            level.sfmlHandler->drawScreen();
             drawLossScreen();
             break;
         }
     }
+    return 0;
 }
 
 int main(){
@@ -116,7 +128,9 @@ int main(){
 
         levelFile.close();
 
-        gameLoop(*level);
+        if (gameLoop(*level) == 2){
+            break;
+        }
 
         char cUserCont;
         cout << endl << "Would you like to continue, quit, or restart? "

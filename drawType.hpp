@@ -191,7 +191,7 @@ public:
             switch(event.type){
                 case sf::Event::Closed:
                     window.close();
-                    return 'q';
+                    return '!';
                     break;
 
                 case sf::Event::KeyPressed:
