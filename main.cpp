@@ -99,8 +99,8 @@ int main(){
     string levelName = "";
     bool  restart = false;
     int numOfLevels = 2;
-    levelType* level;
-    for (int currentLevel = 1; currentLevel <= numOfLevels; ++currentLevel){
+    levelType* level = new levelType();
+    for (int currentLevel = 1; currentLevel <= numOfLevels; currentLevel++){
         if (!restart){
             cout << "Enter the filename for the level you want to load: ";
             //cin >> levelName;
@@ -119,29 +119,15 @@ int main(){
             break;
         }
 
-        if (currentLevel == 1){
-            level = new levelType(levelFile);
-        }
-        else{
-            level->reInitialize(levelFile);
-        };
+        level->buildLevel(levelFile);
 
         levelFile.close();
 
-        if (gameLoop(*level) == 2){
-            break;
-        }
-
-        char cUserCont;
-        cout << endl << "Would you like to continue, quit, or restart? "
-        << "(c/q/r)";
-        userCont = level->sfmlHandler->getInput();
-
-        if (cUserCont == 'q' || cUserCont == 'Q'){
-            break;
-        }
-        else {
-            continue;
+        if (currentLevel == numOfLevels){
+            char userChoice = level->sfmlHandler->drawMainMenu();
+            if (userChoice == '3'){
+                break;
+            }
         }
     }
 

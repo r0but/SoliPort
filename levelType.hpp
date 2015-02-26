@@ -339,7 +339,7 @@ public:
     }
     */
 
-    levelType(ifstream &levelFile)
+    levelType()
     {
 		vertLevelSize = 25;
 		horizLevelSize = 80;
@@ -350,8 +350,6 @@ public:
         }
         
         player = new playerType(10, 10, 0);
-        
-		buildLevel(levelFile);
         
         sfmlHandler = new drawType(vertLevelSize, horizLevelSize, numOfEnemies,
                                    levelArray, enemyArray, player);
