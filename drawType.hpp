@@ -52,6 +52,8 @@ public:
     :window(sf::VideoMode(1280, 720), "Soliton",
             sf::Style::Default)
     {
+        
+        
         pixelSize = 32;
 
         vertLevelSize = nVertLevelSize;
@@ -205,12 +207,54 @@ public:
                         return 'w';
                     else if (event.key.code == sf::Keyboard::Q)
                         return 'q';
+                    else if (event.key.code == sf::Keyboard::Num1)
+                        return '1';
+                    else if (event.key.code == sf::Keyboard::Num2)
+                        return '2';
+                    else if (event.key.code == sf::Keyboard::Num3)
+                        return '3';
                     break;
 
                 default:
                     break;
             };
         }
+    }
+    
+    int drawMainMenu(){
+        if (window.isOpen()){
+            window.clear();
+            
+            sf::Font menuFont;
+            if (!menuFont.loadFromFile(resourcePath() + "sansation.ttf")){
+                cout << "Error! Cannot find font file!\n";
+            }
+            
+            float xOffset = 100;
+            float yOffset = 100;
+            float pixBetweenOptions = 35;
+            
+            sf::Text menuGreeting("Main menu:", menuFont, 20);
+            menuGreeting.setPosition(xOffset, yOffset);
+            window.draw(menuGreeting);
+            
+            sf::Text option1("1. Play campaign", menuFont, 20);
+            option1.setPosition(xOffset, yOffset + pixBetweenOptions);
+            window.draw(option1);
+            
+            sf::Text option2("2. Play custom levels", menuFont, 20);
+            option2.setPosition(xOffset, yOffset + (2.0 * pixBetweenOptions));
+            window.draw(option2);
+            
+            sf::Text option3("3. Quit game", menuFont, 20);
+            option3.setPosition(xOffset, yOffset + (3.0 * pixBetweenOptions));
+            window.draw(option3);
+            
+            window.display();
+        }
+        char userChoice = getInput();
+        
+        return 0;
     }
 
     void setTextures(){
