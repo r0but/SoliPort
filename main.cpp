@@ -66,9 +66,9 @@ int gameLoop(levelType level){
         userInput = level.sfmlHandler->getInput();
 
         if (userInput == 'q')
-            break;
-        else if (userInput == '!'){
             return 2;
+        else if (userInput == '!'){
+            return 3;
         }
         else
             winOrLose = level.iterateMap(userInput);
@@ -149,7 +149,13 @@ int main(){
 
         levelFile.close();
         
-        if (gameLoop(level) == 2){
+        int gameLoopExit = gameLoop(level);
+        
+        if (gameLoopExit == 3){
+            break;
+        }
+        else if (gameLoopExit == 2){
+            currentLevel = 0;
             continue;
         }
         
