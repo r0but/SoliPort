@@ -28,7 +28,6 @@
 #include <cmath>
 
 #ifdef _WIN32
-//define something for Windows (32-bit and 64-bit, this part is common)
 #include "winResourcePath.hpp"
 #elif __APPLE__
 #include "ResourcePath.hpp"
@@ -50,7 +49,7 @@ void drawLossScreen(){
     cout << endl << "You lose! Good day, sir." << endl;
 }
 
-// Exit codes:
+// Exit codes from getInput():
 // 0: Success
 // 1: Error
 // 2: Shut down everything
@@ -101,13 +100,22 @@ int main(){
     int numOfLevels = 2;
     levelType* level = new levelType();
     for (int currentLevel = 1; currentLevel <= numOfLevels; currentLevel++){
+        char userChoice = '1';
         if (!restart){
             cout << "Enter the filename for the level you want to load: ";
             //cin >> levelName;
         }
-
-        // temporary to string the levels together
-        levelName = "level" + to_string(currentLevel) + ".slv";
+        
+        if (currentLevel == 1){
+            userChoice = level->sfmlHandler->drawMainMenu();
+        }
+        
+        if (userChoice == '1'){
+            levelName = "level" + to_string(currentLevel) + ".slv";
+        }
+        if (userChoice == '3'){
+            break;
+        }
 
         ifstream levelFile;
         string levelPath = resourcePath() + levelName;
@@ -119,14 +127,20 @@ int main(){
             break;
         }
 
-        level->buildLevel(levelFile);
+        level->reInitialize(levelFile);
 
         levelFile.close();
+        
+        gameLoop(*level);
 
         if (currentLevel == numOfLevels){
-            char userChoice = level->sfmlHandler->drawMainMenu();
+            userChoice = level->sfmlHandler->drawMainMenu();
             if (userChoice == '3'){
                 break;
+            }
+            else if (userChoice == '1'){
+                currentLevel = 0;
+                continue;
             }
         }
     }

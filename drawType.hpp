@@ -221,7 +221,7 @@ public:
         }
     }
     
-    int drawMainMenu(){
+    char drawMainMenu(){
         if (window.isOpen()){
             window.clear();
             
@@ -254,7 +254,7 @@ public:
         }
         char userChoice = getInput();
         
-        return 0;
+        return userChoice;
     }
 
     void setTextures(){
