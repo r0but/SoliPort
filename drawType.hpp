@@ -221,6 +221,43 @@ public:
         }
     }
     
+    string getLevelName(){
+        if (window.isOpen()){
+            
+            sf::Font menuFont;
+            if (!menuFont.loadFromFile(resourcePath() + "sansation.ttf")){
+                cout << "Error! Cannot find font file (getLevelName)\n";
+            }
+            
+            float xOffset = 100;
+            float yOffset = 100;
+            
+            sf::Event event;
+            string userInput;
+            sf::Text toDisplay("", menuFont, 20);
+            
+            while (window.waitEvent(event)){
+                if (event.Closed){
+                    window.close();
+                    return "";
+                }
+                
+                if (event.type == sf::Event::TextEntered)
+                {
+                    // Handle ASCII characters only
+                    if (event.text.unicode < 128)
+                    {
+                        userInput += static_cast<char>(event.text.unicode);
+                        toDisplay.setString(userInput);
+                    }
+                }
+                
+                window.clear();
+                window.draw(toDisplay);
+            }
+        }
+    }
+    
     char drawMainMenu(){
         if (window.isOpen()){
             window.clear();
@@ -242,12 +279,14 @@ public:
             option1.setPosition(xOffset, yOffset + pixBetweenOptions);
             window.draw(option1);
             
+            /*
             sf::Text option2("2. Play custom levels", menuFont, 20);
             option2.setPosition(xOffset, yOffset + (2.0 * pixBetweenOptions));
             window.draw(option2);
+            */
             
-            sf::Text option3("3. Quit game", menuFont, 20);
-            option3.setPosition(xOffset, yOffset + (3.0 * pixBetweenOptions));
+            sf::Text option3("2. Quit game", menuFont, 20);
+            option3.setPosition(xOffset, yOffset + (2.0 * pixBetweenOptions));
             window.draw(option3);
             
             window.display();

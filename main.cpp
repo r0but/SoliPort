@@ -41,7 +41,6 @@ void drawWinScreen(){
     for (int i = 0; i < 25; i++){
         cout << endl;
     }
-
     cout << "Congratulate! You are winner!" << endl;
 }
 
@@ -80,6 +79,7 @@ int gameLoop(levelType level){
             level.sfmlHandler->setTextures();
             level.sfmlHandler->drawScreen();
             drawWinScreen();
+            return 1;
             break;
         }
         else if (winOrLose == 2){
@@ -87,6 +87,7 @@ int gameLoop(levelType level){
             level.sfmlHandler->setTextures();
             level.sfmlHandler->drawScreen();
             drawLossScreen();
+            return 2;
             break;
         }
     }
@@ -98,24 +99,41 @@ int main(){
     string levelName = "";
     bool  restart = false;
     int numOfLevels = 2;
-    levelType* level = new levelType();
-    for (int currentLevel = 1; currentLevel <= numOfLevels; currentLevel++){
+    levelType level;
+    int currentLevel = 0;
+    while (true){
+        currentLevel++;
         char userChoice = '1';
+        bool quitGame = false;
+        
         if (!restart){
             cout << "Enter the filename for the level you want to load: ";
             //cin >> levelName;
         }
+
+        cout << "currentLevel: " << currentLevel << '\n';
         
-        if (currentLevel == 1){
-            userChoice = level->sfmlHandler->drawMainMenu();
+        if (currentLevel == 1 || currentLevel > numOfLevels){
+            currentLevel = 1;
+            userChoice = level.sfmlHandler->drawMainMenu();
         }
         
-        if (userChoice == '1'){
-            levelName = "level" + to_string(currentLevel) + ".slv";
+        switch (userChoice){
+            case '1':
+                levelName = "level" + to_string(currentLevel) + ".slv";
+                break;
+            
+            case '2':
+                quitGame = true;
+                break;
+                
+            default:
+                quitGame = true;
+                break;
         }
-        if (userChoice == '3'){
+        
+        if (quitGame)
             break;
-        }
 
         ifstream levelFile;
         string levelPath = resourcePath() + levelName;
@@ -127,14 +145,17 @@ int main(){
             break;
         }
 
-        level->reInitialize(levelFile);
+        level.reInitialize(levelFile);
 
         levelFile.close();
         
-        gameLoop(*level);
-
+        if (gameLoop(level) == 2){
+            continue;
+        }
+        
+        /*
         if (currentLevel == numOfLevels){
-            userChoice = level->sfmlHandler->drawMainMenu();
+            userChoice = level.sfmlHandler->drawMainMenu();
             if (userChoice == '3'){
                 break;
             }
@@ -143,6 +164,7 @@ int main(){
                 continue;
             }
         }
+        */
     }
 
     return 0;

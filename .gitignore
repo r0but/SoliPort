@@ -29,7 +29,3 @@
 
 # More OS-X stuff
 .DS_Store
-
-# XCode stuff
-*.plist
-*.xcodeproj
