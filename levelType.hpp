@@ -338,7 +338,7 @@ public:
         return;
     }
     */
-
+     
     levelType()
     {
 		vertLevelSize = 25;
