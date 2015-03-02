@@ -1,9 +1,7 @@
 # SoliPort
 This began as a quick and dirty attempt to modify my game Soliton to use the SFML graphics library instead of the command terminal. However, I want to move on, so this is now the official version of Soliton that will be released.
 
-Its web site is:
-
-sites.google.com/site/solitongame
+Its web site is: https://sites.google.com/site/solitongame
 
 Binaries will be available soon for Windows, OS-X, and Linux.
 
