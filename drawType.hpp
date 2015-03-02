@@ -115,6 +115,10 @@ public:
                                               (float)(y * pixelSize));
             }
         }
+        
+        if (!menuFont.loadFromFile(resourcePath() + "sansation.ttf")){
+            cout << "Error! Cannot find font file!\n";
+        }
 
         return;
     }
@@ -223,12 +227,6 @@ public:
     
     string getLevelName(){
         if (window.isOpen()){
-            
-            sf::Font menuFont;
-            if (!menuFont.loadFromFile(resourcePath() + "sansation.ttf")){
-                cout << "Error! Cannot find font file (getLevelName)\n";
-            }
-            
             float xOffset = 100;
             float yOffset = 100;
             
@@ -262,11 +260,6 @@ public:
         if (window.isOpen()){
             window.clear();
             
-            sf::Font menuFont;
-            if (!menuFont.loadFromFile(resourcePath() + "sansation.ttf")){
-                cout << "Error! Cannot find font file!\n";
-            }
-            
             float xOffset = 100;
             float yOffset = 100;
             float pixBetweenOptions = 35;
@@ -294,6 +287,14 @@ public:
         char userChoice = getInput();
         
         return userChoice;
+    }
+    
+    void drawWinScreen(){
+        if (window.isOpen()){
+            window.clear();
+            
+            
+        }
     }
 
     void setTextures(){
@@ -424,6 +425,8 @@ private:
 
     // floor wall
     sf::Texture texLevel[2];
+    
+    sf::Font menuFont;
 
     sf::Sprite spriteEnemy[25];
     sf::Sprite spritePlayer;

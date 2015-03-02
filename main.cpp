@@ -57,6 +57,7 @@ int gameLoop(levelType level){
     while(true){
 
         // winOrLose - 0 means game isn't finished, 1 means win, 2 means loss
+        // 3 means SHUT DOWN EVERYTHING
         int winOrLose = 0;
 
         level.drawMap();
@@ -158,19 +159,6 @@ int main(){
             currentLevel = 0;
             continue;
         }
-        
-        /*
-        if (currentLevel == numOfLevels){
-            userChoice = level.sfmlHandler->drawMainMenu();
-            if (userChoice == '3'){
-                break;
-            }
-            else if (userChoice == '1'){
-                currentLevel = 0;
-                continue;
-            }
-        }
-        */
     }
 
     return 0;
