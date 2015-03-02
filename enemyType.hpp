@@ -325,23 +325,34 @@ public:
 	}
 
 	void loadPatrolPath(ifstream &levelFile){
+        for (int i = 0; i < 100; i++){
+            patrolPath[i].action = '$';
+            patrolPath[i].direction = '$';
+        }
+        
 		char currentChar = levelFile.get();
-		
-		int i = 0;
-		do{
-			while (currentChar == '#' ||  currentChar == ' ' || 
-				   currentChar == '\n'){
-				currentChar = levelFile.get();
-			}
-			
-			patrolPath[i].action = currentChar;
-			currentChar = levelFile.get();
-			
-			patrolPath[i].direction = currentChar;
-			currentChar = levelFile.get();
-			
-			i++;
-		} while (currentChar != '\n' && currentChar != '#' && !levelFile.eof());
+        int i = 0;
+        
+        cout << currentChar << '\n';
+        
+        do{
+            if (currentChar == ' ' || currentChar == '\n' || currentChar == '$'
+                || currentChar == '#'){
+                cout << currentChar << '\n';
+                currentChar = levelFile.get();
+                continue;
+            }
+            
+            cout << currentChar << '\n';
+            patrolPath[i].action = currentChar;
+            currentChar = levelFile.get();
+            
+            cout << currentChar << '\n';
+            patrolPath[i].direction = currentChar;
+            currentChar = levelFile.get();
+            
+            i++;
+        } while (currentChar != '\n' && !levelFile.eof());
 	}
 	
 	bool checkIfAlive(){

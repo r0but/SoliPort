@@ -98,7 +98,7 @@ int main(){
     bool userCont = true;
     string levelName = "";
     bool  restart = false;
-    int numOfLevels = 2;
+    int numOfLevels = 3;
     levelType level;
     int currentLevel = 0;
     while (true){
