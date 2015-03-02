@@ -32,3 +32,5 @@ Joshua Trahan (josht0288@gmail.com) - Programming, game design, level design
 Morgan Larson - Level 3 design
 
 Player, enemy, and enemy corpse sprites are from SpriteLib. Special thanks to everybody who has worked on that project!
+
+This game was made using the SFML framework. Special thanks to everybody who contributes to SFML!
