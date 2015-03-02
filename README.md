@@ -8,7 +8,7 @@ https://sites.google.com/site/solitongame/home/level-creation
 
 Level creation in Soliton is simple! Just open up your favorite text editor, and start placing characters to shape out your level. Here is what each character means:
 
-+ - | are wall tiles. Players and enemies cannot walk on these tiles, so use them to shape your level.
+\+ - | are wall tiles. Players and enemies cannot walk on these tiles, so use them to shape your level.
 
 . are floor tiles. Players and enemies CAN walk on floor tiles. This is where the action happens in the level.
 
