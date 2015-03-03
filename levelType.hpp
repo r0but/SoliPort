@@ -81,9 +81,7 @@ public:
 		
 		pX = player->getXCoord();
 		pY = player->getYCoord();
-		
-		
-		
+        
 		for (int i = 0; i < numOfEnemies; i++){
 			if (enemyArray[i]->checkIfAlive()){
 				enemyArray[i]->moveAlongPath();
@@ -93,8 +91,7 @@ public:
 		for (int i = 0; i < numOfEnemies; i++){
 			bool isCaught = 0;
 			if (enemyArray[i]->checkIfAlive()){
-				isCaught = enemyArray[i]->checkForPlayer(levelArray,
-															 pX, pY);
+				isCaught = enemyArray[i]->checkForPlayer(pX, pY);
 			}
 			if (isCaught)
 				return 2;
@@ -306,6 +303,9 @@ public:
 		int ammoCount = levelFile.get();
 		player->setAmmoCount(ammoCount);
 
+        for (int i = 0; i < numOfEnemies; i++){
+            enemyArray[i]->loadNewLevel(levelArray);
+        }
         return;
 	}
 
@@ -321,6 +321,8 @@ public:
         player = new playerType(10, 10, 0);
         
         buildLevel(levelFile);
+        
+        
         
         sfmlHandler->reInitialize(vertLevelSize, horizLevelSize, numOfEnemies,
                                   levelArray, enemyArray, player);

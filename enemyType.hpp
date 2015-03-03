@@ -77,168 +77,63 @@ public:
 		yCoord = y;
 		heading = headingSet;
 	}
-
-	bool checkRight(char levelArray[80][25], int pX, int pY) const{
-		// Return false if player is behind enemy
-		if (pX < xCoord){
-			return false;
-		}
-
-		int xOffset = pX - xCoord;
-		int yOffset = pY - yCoord;
-
-		if (xOffset == 0){
-			return false;
-		}
-		if (abs(xOffset) > 4 || abs(yOffset) > 4){
-			return false;
-		}
-		if (abs(xOffset) == 1 && abs(yOffset) != 0){
-			return false;
-		}
+    
+    // what can't be generalized?
+	bool checkRight(int pX, int pY){
+        // levelArray[80][25] is null. ?????????????
+        
+        // temp eX = 7; ey = 3
+        if (pX == 8 && pY == 3 && xCoord == 7){
+            cout << "eX: " << xCoord << " / eY: " << yCoord << '\n';
+        }
+        
+        if (pX - xCoord > 4 || pX - xCoord <= 0){
+            cout << "pX - xCoord > 4\n";
+            return false;
+        }
+        
+        double slope;
+        if (pX - xCoord == 0){
+            slope = 10000;
+        }
+        else{
+            slope = (static_cast<double>(pY) -
+                     static_cast<double>(yCoord)) /
+                    (static_cast<double>(pX) -
+                     static_cast<double>(xCoord));
+        }
+        
+        if (slope > 1.1 || slope < -1.1){
+            return false;
+        }
+        
+        for (int x = 0; x <= 4; x++){
+            int y = (static_cast<double>(x) * slope);
+            y++;
+            
+            if (levelArray[xCoord + x][yCoord + y] != '.'){
+                return false;
+            }
+        }
+        
+        
+        return true;
+        
+    }
+        
+	bool checkUp(int pX, int pY) const{
 		
-		double slope = (double)yOffset / (double)xOffset;
-		cout << "Right Slope: " << slope << endl;
-		
-		// Quick hack to make hiding behind walls more forgiving
-		if (levelArray[pX - 1][pY] != '.'){
-			return false;
-		}
-		
-		// Drawing line toward player to see if the enemy should see them.
-		// Returns false if line hits a wall.
-		// 
-		// Note to self: instead of hacky shit 15 or so lines up, possibly
-		// 	put (y += (x * slope)) before (x++)
-		for (int y = 0, x = 0; x <= 4; x++, y += (x * slope)){
-			if (levelArray[xCoord + x][yCoord + y] != '.'){
-				return false;
-			}
-			if (xCoord + x == pX && yCoord + y == pY){
-				return true;
-			}
-		}
-		return false;
 	}
 
-	bool checkLeft(char levelArray[80][25], int pX, int pY) const{
-		// Return false if player is behind enemy
-		if (pX > xCoord){
-			return false;
-		}
+	bool checkLeft(int pX, int pY) const{
 		
-		int xOffset = pX - xCoord;
-		int yOffset = pY - yCoord;
-		
-		if (xOffset == 0){
-			return false;
-		}
-		if (xOffset > 4 || yOffset > 4){
-			return false;
-		}
-		if (abs(xOffset) == 1 && abs(yOffset) != 0){
-			return false;
-		}
-		
-		double slope = (double)yOffset / (double)xOffset;
-		
-		// Quick hack to make hiding behind walls more forgiving
-		if (levelArray[pX + 1][pY] != '.'){
-			return false;
-		}
-		
-		// Drawing line toward player to see if the enemy should see them.
-		// Returns false if line hits a wall.
-		for (int y = 0, x = 0; x >= -4; x--, y += (x * slope)){
-			if (levelArray[xCoord + x][yCoord + y] != '.'){
-				return false;
-			}
-			if (xCoord + x == pX && yCoord + y == pY){
-				return true;
-			}
-		}
-		return false;
 	}
 
-	bool checkUp(char levelArray[80][25], int pX, int pY) const{
-		// Return false if player is behind enemy
-		if (pY > yCoord){
-			return false;
-		}
+	bool checkDown(int pX, int pY) const{
 		
-		int xOffset = pX - xCoord;
-		int yOffset = pY - yCoord;
-		
-		if (yOffset == 0){
-			return false;
-		}
-		if (xOffset > 4 || yOffset > 4){
-			return false;
-		}
-		if (abs(yOffset) == 1 && abs(xOffset) != 0){
-			return false;
-		}
-		
-		double slope = (double)xOffset / (double)yOffset;
-		
-		// Quick hack to make hiding behind walls more forgiving
-		if (levelArray[pX][pY - 1] != '.'){
-			return false;
-		}
-		
-		// Drawing line toward player to see if the enemy should see them.
-		// Returns false if line hits a wall.
-		for (int y = 0, x = 0; y >= -4; y--, x += (y * slope)){
-			if (levelArray[xCoord + x][yCoord + y] != '.'){
-				return false;
-			}
-			if (xCoord + x == pX && yCoord + y == pY){
-				return true;
-			}
-		}
-		return false;
 	}
 
-	bool checkDown(char levelArray[80][25], int pX, int pY) const{
-		// Return false if player is behind enemy
-		if (pY < yCoord){
-			return false;
-		}
-		
-		int xOffset = pX - xCoord;
-		int yOffset = pY - yCoord;
-		
-		if (yOffset == 0){
-			return false;
-		}
-		if (xOffset > 4 || yOffset > 4){
-			return false;
-		}
-		if (abs(yOffset) == 1 && abs(xOffset) != 0){
-			return false;
-		}
-		
-		double slope = (double)xOffset / (double)yOffset;
-		
-		// Quick hack to make hiding behind walls more forgiving
-		if (levelArray[pX][pY + 1] != '.'){
-			return false;
-		}
-		
-		// Drawing line toward player to see if the enemy should see them.
-		// Returns false if line hits a wall.
-		for (int y = 0, x = 0; y <= 4; y++, x += (y * slope)){
-			if (levelArray[xCoord + x][yCoord + y] != '.'){
-				return false;
-			}
-			if (xCoord + x == pX && yCoord + y == pY){
-				return true;
-			}
-		}
-		return false;
-	}
-
-	bool checkForPlayer(char levelArray[80][25], int pX, int pY){
+	bool checkForPlayer(int pX, int pY){
 		if (xCoord == pX && yCoord == pY){
 			return 1;
 		}
@@ -248,25 +143,25 @@ public:
 		// I'm sorry to whoever reads this.
 		switch(heading){
 			case 0:
-				if (checkRight(levelArray, pX, pY))
+				if (checkRight(pX, pY))
 					return 1;
 				else
 					return 0;
 				break;
 			case 2:
-				if (checkLeft(levelArray, pX, pY))
+				if (checkLeft(pX, pY))
 					return 1;
 				else
 					return 0;
 				break;
 			case 3:
-				if (checkDown(levelArray, pX, pY))
+				if (checkDown(pX, pY))
 					return 1;
 				else
 					return 0;
 				break;
 			case 1:
-				if (checkUp(levelArray, pX, pY))
+				if (checkUp(pX, pY))
 					return 1;
 				else
 					return 0;
@@ -276,6 +171,16 @@ public:
 		}
 		return 0;
 	}
+    
+    bool loadNewLevel(char newLevelArray[80][25]){
+        for (int x = 0; x < 80; x++){
+            for (int y = 0; y < 25; y++){
+                levelArray[x][y] = newLevelArray[x][y];
+            }
+        }
+        
+        return 1;
+    }
 	
 	void moveAlongPath(){
 		char direction = patrolPath[pathLoc].direction;
@@ -409,6 +314,8 @@ private:
 	int pathLoc;
 	int heading;
 	bool isAlive;
+    
+    char levelArray[80][25];
 };
 
 #endif
