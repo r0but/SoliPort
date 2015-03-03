@@ -77,16 +77,16 @@ public:
 		yCoord = y;
 		heading = headingSet;
 	}
-	
+
 	bool checkRight(char levelArray[80][25], int pX, int pY) const{
 		// Return false if player is behind enemy
 		if (pX < xCoord){
 			return false;
 		}
-		
+
 		int xOffset = pX - xCoord;
 		int yOffset = pY - yCoord;
-		
+
 		if (xOffset == 0){
 			return false;
 		}
