@@ -96,21 +96,14 @@ int gameLoop(levelType level){
 }
 
 int main(){
-    bool userCont = true;
     string levelName = "";
-    bool  restart = false;
-    int numOfLevels = 3;
+    int numOfLevels = 4;
     levelType level;
-    int currentLevel = 0;
+    int currentLevel = 3;
     while (true){
         currentLevel++;
         char userChoice = '1';
-        bool quitGame = false;
-        
-        if (!restart){
-            cout << "Enter the filename for the level you want to load: ";
-            //cin >> levelName;
-        }
+        bool quitGame = false;\
 
         cout << "currentLevel: " << currentLevel << '\n';
         

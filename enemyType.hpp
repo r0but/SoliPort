@@ -122,15 +122,15 @@ public:
     }
         
 	bool checkUp(int pX, int pY) const{
-		
+        return false;
 	}
 
 	bool checkLeft(int pX, int pY) const{
-		
+        return false;
 	}
 
 	bool checkDown(int pX, int pY) const{
-		
+        return false;
 	}
 
 	bool checkForPlayer(int pX, int pY){

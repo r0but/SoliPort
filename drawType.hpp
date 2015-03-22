@@ -187,6 +187,7 @@ public:
                                               (float)(y * pixelSize));
             }
         }
+        return 0;
     }
 
     char getInput(){
@@ -211,6 +212,8 @@ public:
                         return 'w';
                     else if (event.key.code == sf::Keyboard::Q)
                         return 'q';
+                    else if (event.key.code == sf::Keyboard::X)
+                        return 'x';
                     else if (event.key.code == sf::Keyboard::Num1)
                         return '1';
                     else if (event.key.code == sf::Keyboard::Num2)
@@ -223,37 +226,7 @@ public:
                     break;
             };
         }
-    }
-    
-    string getLevelName(){
-        if (window.isOpen()){
-            float xOffset = 100;
-            float yOffset = 100;
-            
-            sf::Event event;
-            string userInput;
-            sf::Text toDisplay("", menuFont, 20);
-            
-            while (window.waitEvent(event)){
-                if (event.Closed){
-                    window.close();
-                    return "";
-                }
-                
-                if (event.type == sf::Event::TextEntered)
-                {
-                    // Handle ASCII characters only
-                    if (event.text.unicode < 128)
-                    {
-                        userInput += static_cast<char>(event.text.unicode);
-                        toDisplay.setString(userInput);
-                    }
-                }
-                
-                window.clear();
-                window.draw(toDisplay);
-            }
-        }
+        return 'x';
     }
     
     char drawMainMenu(){
