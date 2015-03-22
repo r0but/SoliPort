@@ -229,6 +229,31 @@ public:
         return 'x';
     }
     
+    int drawLossScreen(){
+        if (window.isOpen()){
+            sf::Text lossText("Game over.", menuFont, 20);
+            lossText.setPosition(640 - 20, 360);
+            lossText.setColor(sf::Color::Red);
+            
+            window.draw(lossText);
+            window.display();
+        }
+        return 0;
+    }
+    
+    int drawWinScreen(){
+        if (window.isOpen()){
+            window.clear();
+            sf::Text winText("Congratulations, you win!", menuFont, 60);
+            winText.setPosition(640 - 350, 300);
+            winText.setColor(sf::Color::Green);
+            
+            window.draw(winText);
+            window.display();
+        }
+        return 0;
+    }
+    
     char drawMainMenu(){
         if (window.isOpen()){
             window.clear();
@@ -260,14 +285,6 @@ public:
         char userChoice = getInput();
         
         return userChoice;
-    }
-    
-    void drawWinScreen(){
-        if (window.isOpen()){
-            window.clear();
-            
-            
-        }
     }
 
     void setTextures(){
@@ -373,7 +390,7 @@ public:
             window.display();
             return 0;
         }
-        return 0;
+        return -1;
     }
 
 

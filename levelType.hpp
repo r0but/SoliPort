@@ -60,6 +60,10 @@ public:
             };
             bool killedEnemy = false;
             
+            if (levelArray[pX][pY] == 'E'){
+                return 1;
+            }
+            
             for (int i = 0; i < numOfEnemies; i++){
                 
                 if (enemyArray[i]->getXCoord() == pX &&
@@ -93,16 +97,12 @@ public:
 			if (enemyArray[i]->checkIfAlive()){
 				isCaught = enemyArray[i]->checkForPlayer(pX, pY);
 			}
-			if (isCaught)
+            if (isCaught){
 				return 2;
+            }
 		}
 		
-		if (levelArray[pX][pY] == 'E'){
-			return 1;
-		}
-		else{
-			return 0;
-		}
+        return 0;
 	}
 	
 	void drawMap(){
@@ -363,11 +363,12 @@ public:
 	}
     
     drawType *sfmlHandler;
+    playerType *player;
 private:
 	int vertLevelSize;
 	int horizLevelSize;
 	int numOfEnemies;
-	playerType *player;
+	//playerType *player;
 	enemyType *enemyArray[25];
 
 	char levelArray[80][25];

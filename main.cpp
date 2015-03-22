@@ -48,10 +48,6 @@ void drawLossScreen(){
     cout << endl << "You lose! Good day, sir." << endl;
 }
 
-// Exit codes from getInput():
-// 0: Success
-// 1: Error
-// 2: Shut down everything
 int gameLoop(levelType level){
     char userInput;
     while(true){
@@ -85,9 +81,15 @@ int gameLoop(levelType level){
         }
         else if (winOrLose == 2){
             level.drawMap();
+            
+            cout << "Player coords: " << level.player->getXCoord() << ", "
+                 << level.player->getYCoord() << '\n';
+            
             level.sfmlHandler->setTextures();
             level.sfmlHandler->drawScreen();
             drawLossScreen();
+            level.sfmlHandler->drawLossScreen();
+            level.sfmlHandler->getInput();
             return 2;
             break;
         }
@@ -97,7 +99,7 @@ int gameLoop(levelType level){
 
 int main(){
     string levelName = "";
-    int numOfLevels = 4;
+    int numOfLevels = 3;
     levelType level;
     int currentLevel = 0;
     while (true){
@@ -107,8 +109,13 @@ int main(){
 
         cout << "currentLevel: " << currentLevel << '\n';
         
-        if (currentLevel == 1 || currentLevel > numOfLevels){
+        if (currentLevel > numOfLevels){
+            level.sfmlHandler->drawWinScreen();
+            level.sfmlHandler->getInput();
             currentLevel = 1;
+        }
+        
+        if (currentLevel == 1){
             userChoice = level.sfmlHandler->drawMainMenu();
         }
         

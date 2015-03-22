@@ -263,8 +263,31 @@ public:
 
 	bool checkForPlayer(int pX, int pY){
 		if (xCoord == pX && yCoord == pY){
-			return 1;
+			return true;
 		}
+        
+        
+        if (xCoord - pX < 0){ // player to the right
+            if (levelArray[pX - 1][pY] != '.'){
+                return false;
+            }
+        }
+        else if (xCoord - pX > 0){ // player to the left
+            if (levelArray[pX + 1][pY] != '.'){
+                return false;
+            }
+        }
+        
+        if (yCoord - pY < 0){ // player below
+            if (levelArray[pX][pY - 1] != '.'){
+                return false;
+            }
+        }
+        else if (yCoord - pY > 0){ // player above
+            if (levelArray[pX][pY + 1] != '.'){
+                return false;
+            }
+        }
 		
 		// just need to have return(checkDirection()), will fix later.
 		// All this sight code is hacky garbage. 
