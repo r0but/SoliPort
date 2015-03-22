@@ -99,7 +99,7 @@ int main(){
     string levelName = "";
     int numOfLevels = 4;
     levelType level;
-    int currentLevel = 3;
+    int currentLevel = 0;
     while (true){
         currentLevel++;
         char userChoice = '1';

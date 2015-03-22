@@ -180,6 +180,9 @@ public:
 	}
 	
 	void playerShoot(){
+        // This isn't implemented right now, and I'm not sure if I
+        // actually want it in the game anyway
+        
 		if (player->getAmmoCount() > 0){
 			return;
 		}

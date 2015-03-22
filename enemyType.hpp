@@ -78,59 +78,187 @@ public:
 		heading = headingSet;
 	}
     
-    // what can't be generalized?
 	bool checkRight(int pX, int pY){
-        // levelArray[80][25] is null. ?????????????
         
-        // temp eX = 7; ey = 3
-        if (pX == 8 && pY == 3 && xCoord == 7){
-            cout << "eX: " << xCoord << " / eY: " << yCoord << '\n';
-        }
-        
+        // Direction specific
         if (pX - xCoord > 4 || pX - xCoord <= 0){
-            cout << "pX - xCoord > 4\n";
+            cout << "pX - xCoord > 4 or <= 0\n";
             return false;
         }
         
-        double slope;
-        if (pX - xCoord == 0){
-            slope = 10000;
-        }
-        else{
-            slope = (static_cast<double>(pY) -
-                     static_cast<double>(yCoord)) /
-                    (static_cast<double>(pX) -
-                     static_cast<double>(xCoord));
+        // debug stuff
+        cout << "enemy X: " << xCoord << '\n';
+        cout << "enemy Y: " << yCoord << '\n';
+        cout << "pX: " << pX << '\n';
+        cout << "pY: " << pY << '\n';
+        
+        // Direction specific
+        if (levelArray[pX - 1][pY] != '.'){
+            cout << "Player next to wall\n";
+            return false;
         }
         
+        // Can be generalized to left, but will give undefined values if used
+        // for up and down. For that I just have to invert.
+        float slope = (static_cast<float>(pY) -
+                        static_cast<float>(yCoord)) /
+                       (static_cast<float>(pX) -
+                        static_cast<float>(xCoord));
+        
+        cout << "Slope: " << slope << '\n';
+        
+        // Can be generalized
         if (slope > 1.1 || slope < -1.1){
             return false;
         }
         
-        for (int x = 0; x <= 4; x++){
-            int y = (static_cast<double>(x) * slope);
-            y++;
+        // Direction specific
+        for (int x = 1; x <= pX - xCoord; x++){
+            int y = round(static_cast<float>(x) * slope);
+            
+            if (levelArray[xCoord + x][yCoord + y] != '.'){
+                cout << "Sightline collision with wall at x = " << x << " and "
+                     << "y = " << y << '\n';
+                
+                return false;
+            }
+        }
+        return true;
+    }
+        
+	bool checkUp(int pX, int pY) const{
+        
+        // Direction specific. Fixed for up
+        if (pY - yCoord < -4 || pY - yCoord >= 0){
+            cout << "Wrong direction\n";
+            return false;
+        }
+        
+        // debug stuff
+        cout << "enemy X: " << xCoord << '\n';
+        cout << "enemy Y: " << yCoord << '\n';
+        cout << "pX: " << pX << '\n';
+        cout << "pY: " << pY << '\n';
+        
+        // Direction specific - fixed for up
+        if (levelArray[pX][pY + 1] != '.'){
+            cout << "Player next to wall\n";
+            return false;
+        }
+        
+        // Can be generalized to left, but will give undefined values if used
+        // for up and down. For that I will invert.
+        float slope = (static_cast<float>(pX) -
+                       static_cast<float>(xCoord)) /
+                      (static_cast<float>(pY) -
+                       static_cast<float>(yCoord));
+        
+        cout << "Slope: " << slope << '\n';
+        
+        // Generalized
+        if (slope > 1.1 || slope < -1.1){
+            return false;
+        }
+        
+        // Direction specific - fixed for up
+        for (int y = -1; y >= pY - yCoord; y--){
+            int x = round(static_cast<float>(y) * slope);
             
             if (levelArray[xCoord + x][yCoord + y] != '.'){
                 return false;
             }
         }
-        
-        
         return true;
-        
-    }
-        
-	bool checkUp(int pX, int pY) const{
-        return false;
 	}
 
 	bool checkLeft(int pX, int pY) const{
-        return false;
+        
+        // Direction specific. Fixed for left
+        if (pX - xCoord < -4 || pX - xCoord >= 0){
+            cout << "pX - xCoord > -4 or <= 0\n";
+            return false;
+        }
+        
+        // debug stuff
+        cout << "enemy X: " << xCoord << '\n';
+        cout << "enemy Y: " << yCoord << '\n';
+        cout << "pX: " << pX << '\n';
+        cout << "pY: " << pY << '\n';
+        
+        // Direction specific - fixed for left
+        if (levelArray[pX + 1][pY] != '.'){
+            cout << "Player next to wall\n";
+            return false;
+        }
+        
+        // Can be generalized to left, but will give undefined values if used
+        // for up and down. For that I will invert.
+        float slope = (static_cast<float>(pY) -
+                       static_cast<float>(yCoord)) /
+                      (static_cast<float>(pX) -
+                       static_cast<float>(xCoord));
+        
+        cout << "Slope: " << slope << '\n';
+        
+        // Generalized
+        if (slope > 1.1 || slope < -1.1){
+            return false;
+        }
+        
+        // Direction specific - fixed for left
+        for (int x = -1; x >= pX - xCoord; x--){
+            int y = round(static_cast<float>(x) * slope);
+            
+            if (levelArray[xCoord + x][yCoord + y] != '.'){
+                return false;
+            }
+        }
+        return true;
+
 	}
 
 	bool checkDown(int pX, int pY) const{
-        return false;
+        // Direction specific - fixed for down
+        if (pY - yCoord > 4 || pY - yCoord <= 0){
+            cout << "Wrong direction\n";
+            return false;
+        }
+        
+        // debug stuff
+        cout << "enemy X: " << xCoord << '\n';
+        cout << "enemy Y: " << yCoord << '\n';
+        cout << "pX: " << pX << '\n';
+        cout << "pY: " << pY << '\n';
+        
+        // Direction specific - fixed for down
+        if (levelArray[pX][pY - 1] != '.'){
+            cout << "Player next to wall\n";
+            return false;
+        }
+        
+        // Can be generalized to left, but will give undefined values if used
+        // for up and down. For that I will invert.
+        float slope = (static_cast<float>(pX) -
+                       static_cast<float>(xCoord)) /
+                      (static_cast<float>(pY) -
+                       static_cast<float>(yCoord));
+        
+        cout << "Slope: " << slope << '\n';
+        
+        // Generalized
+        if (slope > 1.1 || slope < -1.1){
+            return false;
+        }
+        
+        // Direction specific - fixed for up
+        for (int y = 1; y <= pY - yCoord; y++){
+            int x = round(static_cast<float>(y) * slope);
+            
+            if (levelArray[xCoord + x][yCoord + y] != '.'){
+                return false;
+            }
+        }
+        return true;
 	}
 
 	bool checkForPlayer(int pX, int pY){
