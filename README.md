@@ -8,7 +8,7 @@ Binaries will be available soon for Windows, OS-X, and Linux.
 # Level Creation
 https://sites.google.com/site/solitongame/home/level-creation
 
-Level creation in Soliton is simple! Just open up your favorite text editor, and start placing characters to shape out your level. Here is what each character means:
+Level creation in Soliton is simple! Just open up your favorite text editor (I recommend `m-x artist-mode` in Emacs), and start placing characters to shape out your level. Here is what each character means:
 
 (+ - | \ / X) are wall tiles. Players and enemies cannot walk on these tiles, so use them to shape your level.
 
