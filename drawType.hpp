@@ -49,7 +49,7 @@ public:
     drawType(int const nVertLevelSize, int const nHorizLevelSize,
              int const nNumOfEnemies, char nLevelArray[80][25],
              enemyType *nEnemyArray[25], playerType *nPlayer)
-    :window(sf::VideoMode(1280, 720), "Soliton",
+    :window(sf::VideoMode(1280, 736), "Soliton",
             sf::Style::Default)
     {
         

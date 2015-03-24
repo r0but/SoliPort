@@ -133,6 +133,17 @@ int main(){
                 break;
         }
         
+        if (userChoice == '1'){
+            levelName = "level" + to_string(currentLevel) + ".slv";
+        }
+        else if (userChoice == '2'){
+            break;
+        }
+        else{
+            currentLevel = 0;
+            continue;
+        }
+        
         if (quitGame)
             break;
 
