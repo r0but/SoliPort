@@ -1,5 +1,5 @@
 # SoliPort
-This began as a quick and dirty attempt to modify my game Soliton to use the SFML graphics library instead of the command terminal. However, it has quickly turned into the main version of the game. The other repository - github.com/r0but/soliton - is deprecated.
+This began as a quick and dirty attempt to modify my game Soliton to use the SFML graphics library instead of the command terminal. However, it has quickly turned into the main version of the game.
 
 Its web site is: https://sites.google.com/site/solitongame
 
