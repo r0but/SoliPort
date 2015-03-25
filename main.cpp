@@ -99,13 +99,13 @@ int gameLoop(levelType level){
 
 int main(){
     string levelName = "";
-    int numOfLevels = 3;
+    int numOfLevels = 4;
+    int currentLevel = 3;
     levelType level;
-    int currentLevel = 0;
     while (true){
         currentLevel++;
         char userChoice = '1';
-        bool quitGame = false;\
+        bool quitGame = false;
 
         cout << "currentLevel: " << currentLevel << '\n';
         
