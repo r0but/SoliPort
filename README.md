@@ -26,7 +26,7 @@ Spaces are empty space. They signify the outside of the level.
 
 ($) is the end of map tile. This signifies where your level file stops mapping out the level and starts loading in the enemy paths. There should only be enemy path codes after it.
 
-The enemies are numbered from left to right, up to down. Enemies can be assigned paths by using the # character that are defined by pairs of characters separated by spaces. 'm' means move one space, 'l' means look without moving. 'r' 'u' 'l' and 'd' mean right, up, left, and down respectively. They move once per turn, and once they reach the end of their path, they start over from the beginning. The paths are assigned to the enemies sequentially - the first path will be assigned to Enemy 1, the second to Enemy 2, and so on. It is best to keep each individual path on its own line. To skip an enemy, simply put a # with nothing else following it on the line.
+The enemies are numbered from left to right, up to down. Enemies can be assigned paths by using the # character that are represented by pairs of characters separated by spaces. 'm' means move one space, 'l' means look without moving. 'r' 'u' 'l' and 'd' mean right, up, left, and down respectively. They move once per turn, and once they reach the end of their path, they start over from the beginning. The paths are assigned to the enemies sequentially - the first path will be assigned to Enemy 1, the second to Enemy 2, and so on. It is best to keep each individual path on its own line. To skip an enemy, simply put a # with nothing else following it on the line.
 
 Name your levels level1.slv, level2.slv, etc. You can have as many levels as you want.
 
