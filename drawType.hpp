@@ -150,7 +150,6 @@ public:
         }
 
         for (int i = 4; i < 8; i++){
-
             if (!texEnemy[i - 4].loadFromFile( resourcePath() + std::to_string(i) + ".png" )){
                 cout << to_string(i) << " enemy texture failed to load\n";
             }
@@ -191,41 +190,44 @@ public:
     }
 
     char getInput(){
-        sf::Event event;
+        if (window.isOpen()){
+            sf::Event event;
+            
+            while (window.waitEvent(event)){
+                switch(event.type){
+                    case sf::Event::Closed:
+                        window.close();
+                        return '!';
+                        break;
 
-        while (window.waitEvent(event)){
+                    case sf::Event::KeyPressed:
+                        if (event.key.code == sf::Keyboard::D)
+                            return 'd';
+                        else if (event.key.code == sf::Keyboard::S)
+                            return 's';
+                        else if (event.key.code == sf::Keyboard::A)
+                            return 'a';
+                        else if (event.key.code == sf::Keyboard::W)
+                            return 'w';
+                        else if (event.key.code == sf::Keyboard::Q)
+                            return 'q';
+                        else if (event.key.code == sf::Keyboard::X)
+                            return 'x';
+                        else if (event.key.code == sf::Keyboard::Num1)
+                            return '1';
+                        else if (event.key.code == sf::Keyboard::Num2)
+                            return '2';
+                        else if (event.key.code == sf::Keyboard::Num3)
+                            return '3';
+                        break;
 
-            switch(event.type){
-                case sf::Event::Closed:
-                    window.close();
-                    return '!';
-                    break;
-
-                case sf::Event::KeyPressed:
-                    if (event.key.code == sf::Keyboard::D)
-                        return 'd';
-                    else if (event.key.code == sf::Keyboard::S)
-                        return 's';
-                    else if (event.key.code == sf::Keyboard::A)
-                        return 'a';
-                    else if (event.key.code == sf::Keyboard::W)
-                        return 'w';
-                    else if (event.key.code == sf::Keyboard::Q)
-                        return 'q';
-                    else if (event.key.code == sf::Keyboard::X)
-                        return 'x';
-                    else if (event.key.code == sf::Keyboard::Num1)
-                        return '1';
-                    else if (event.key.code == sf::Keyboard::Num2)
-                        return '2';
-                    else if (event.key.code == sf::Keyboard::Num3)
-                        return '3';
-                    break;
-
-                default:
-                    break;
-            };
+                    default:
+                        break;
+                };
+            }
         }
+        
+        // this shouldn't ever happen, but y'know
         return 'x';
     }
     
