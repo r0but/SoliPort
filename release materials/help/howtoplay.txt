@@ -1,0 +1,7 @@
+Soliton is a stealth game heavily inspired by Metal Gear Solid. Players and enemies take turns moving around a map; whenever the player moves, every enemy makes their move as well.
+
+Movement is done with the W, A, S, D, and X keys. W moves up, A moves left, S moves down, D moves right, and X will make you stand still for the turn.
+
+Enemies can see four tiles in front of them in a V shape; this V is three across directly in front of them, five tiles across two tiles in front, seven tiles across three tiles in front, and nine across four tiles in front. They cannot see through walls, so hiding is very important.
+
+Enemies are incapacitated whenever the player tries to move into their tile from an adjacent tile.
