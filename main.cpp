@@ -99,8 +99,8 @@ int gameLoop(levelType level){
 
 int main(){
     string levelName = "";
-    int numOfLevels = 4;
-    int currentLevel = 3;
+//    int numOfLevels = 4;
+    int currentLevel = 0;
     levelType level;
     while (true){
         currentLevel++;
@@ -109,11 +109,11 @@ int main(){
 
         cout << "currentLevel: " << currentLevel << '\n';
         
-        if (currentLevel > numOfLevels){
-            level.sfmlHandler->drawWinScreen();
-            level.sfmlHandler->getInput();
-            currentLevel = 1;
-        }
+//        if (currentLevel > numOfLevels){
+//            level.sfmlHandler->drawWinScreen();
+//            level.sfmlHandler->getInput();
+//            currentLevel = 1;
+//        }
         
         if (currentLevel == 1){
             userChoice = level.sfmlHandler->drawMainMenu();
@@ -151,10 +151,14 @@ int main(){
         string levelPath = resourcePath() + levelName;
         levelFile.open(levelPath.c_str());
 
-        if (!levelFile.is_open()){
+        if (!levelFile.is_open() && currentLevel == 1){
             cout << "Level not found. Make sure you typed it correctly, ";
             cout << "and that it is in the game's directory." << endl << endl;
             break;
+        }
+        else if (!levelFile.is_open()){
+            currentLevel = 0;
+            continue;
         }
 
         level.reInitialize(levelFile);
