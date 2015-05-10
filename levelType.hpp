@@ -36,43 +36,43 @@ using namespace std;
 class levelType{
 public:
 	int iterateMap(char input){
-	
+
         int pX = player->getXCoord();
         int pY = player->getYCoord();
-        
+
 		if (input == 'a' || input == 'w' || input == 's' || input == 'd'){
             switch(input){
                 case 'd':
                     pX += 1;
                     break;
-                
+
                 case 'w':
                     pY -= 1;
                     break;
-                    
+
                 case 'a':
                     pX -= 1;
                     break;
-                    
+
                 case 's':
                     pY += 1;
                     break;
             };
             bool killedEnemy = false;
-            
+
             if (levelArray[pX][pY] == 'E'){
                 return 1;
             }
-            
+
             for (int i = 0; i < numOfEnemies; i++){
-                
+
                 if (enemyArray[i]->getXCoord() == pX &&
                     enemyArray[i]->getYCoord() == pY &&
                     enemyArray[i]->checkIfAlive()){
-                    
+
                     enemyArray[i]->killEnemy();
                     killedEnemy = true;
-                    
+
                 }
             }
             if (!killedEnemy){
@@ -82,32 +82,38 @@ public:
 		if (input == 'f'){
 			playerShoot();
 		}
-		
+
 		pX = player->getXCoord();
 		pY = player->getYCoord();
-        
+
 		for (int i = 0; i < numOfEnemies; i++){
 			if (enemyArray[i]->checkIfAlive()){
 				enemyArray[i]->moveAlongPath();
 			}
 		}
-		
+
 		for (int i = 0; i < numOfEnemies; i++){
 			bool isCaught = 0;
 			if (enemyArray[i]->checkIfAlive()){
 				isCaught = enemyArray[i]->checkForPlayer(pX, pY);
 			}
             if (isCaught){
+                for (int i = 0; i < numOfEnemies; i++){
+                    enemyArray[i]->moveAlongPath();
+                }
+                drawMap();
+                sfmlHandler->setTextures();
+                sfmlHandler->drawScreen();
 				return 2;
             }
 		}
-		
+
         return 0;
 	}
-	
+
 	void drawMap(){
         bool endOfMap = false;
-		
+
         for (int y = 0; y < vertLevelSize; y++){
 			for (int x = 0; x < horizLevelSize; x++){
 				if (player->getYCoord() == y && player->getXCoord() == x)
@@ -120,7 +126,7 @@ public:
 					endOfMap = true;
 					break;
 				}
-                
+
 				// isEnemyHere used here TODO: Fix this code to fit with refactoring of
 				// isEnemyHere to whichEnemyHere()
 				else if (whichEnemyHere(x, y) != -1){
@@ -133,24 +139,24 @@ public:
 				}
 				else
 					cout << levelArray[x][y];
-					
-				
+
+
 			}
 			if (endOfMap)
 				break;
-				
+
 		}
-		
+
 		for (int i = 0; i < 24 - vertLevelSize; i++){
 			cout << endl;
 		}
-        
+
 	}
-	
+
 	bool checkIfWall(int xCoord, int yCoord){
 		// Returns true if tile at given coordinates is a wall
         // TODO: Return type of wall (intersetctions, corners, etc)
-		
+
 		if (levelArray[xCoord][yCoord] != '.')
 			return true;
 		else
@@ -161,7 +167,7 @@ public:
 		for (int i = 0; i < numOfEnemies; i++){
 			if (enemyArray[i]->getXCoord() == x &&
 					enemyArray[i]->getYCoord() == y){
-				return i;				
+				return i;
 			}
 		}
 		return -1;
@@ -178,15 +184,15 @@ public:
 		}
         return;
 	}
-	
+
 	void playerShoot(){
         // This isn't implemented right now, and I'm not sure if I
         // actually want it in the game anyway
-        
+
 		if (player->getAmmoCount() > 0){
 			return;
 		}
-		
+
 		int xFromPlayer;
 		int yFromPlayer;
 		int playerX = player->getXCoord();
@@ -195,28 +201,28 @@ public:
 		cout << "What tile, relative to you, do you want to shoot? ";
 		cin >> xFromPlayer;
 		cin >> yFromPlayer;
-		
+
 		if (xFromPlayer == 0){
 			slope = 1000;
 		}
 		else{
 			slope = (double)yFromPlayer / (double)xFromPlayer;
 		}
-		
+
 		int invSlope = 1.0 / slope;
-		
+
 		int finalX = player->getXCoord() + xFromPlayer;
 		int finalY = player->getYCoord() + yFromPlayer;
-		
+
 		int enemyToKill = whichEnemyHere(finalX, finalY);
-		
+
 		bool isWall = false;
 		if (slope < 1.00005 || slope > -1.00005){
 			for (int x = playerX, y = playerY; y < finalY; y++, x += (y * invSlope)){
 				if (levelArray[x][y] != '.'){
 					isWall = true;
 				}
-			}			
+			}
 		}
 		else{
 			for (int x = playerX, y = playerY; x < finalX; x++, y += (x * slope)){
@@ -225,26 +231,26 @@ public:
 				}
 			}
 		}
-		
+
 		if (!isWall){
 			enemyArray[enemyToKill]->killEnemy();
 		}
-		
+
 		player->decrementAmmoCount();
-		
+
 		return;
 	}
-	
+
 	void buildLevel(ifstream &levelFile){
-	
-		// Initialize array with ' ' (space) 
+
+		// Initialize array with ' ' (space)
 		// characters, signifying empty tiles
 		for (int y = 0; y < 25; y++){
 			for (int x = 0; x < 80; x++){
 				levelArray[x][y] = ' ';
 			}
 		}
-		
+
 		bool endOfFile = false;
 		for (int y = 0; y < 25; y++){
 			vertLevelSize = y;
@@ -260,7 +266,7 @@ public:
 					levelArray[x][y] = '$';
 					break;
 				}
-				
+
 				switch (currentTile){
 					case '@':
 						player->setPosition(x, y);
@@ -299,9 +305,9 @@ public:
 				}
 				if (endOfLine || endOfFile)
 					break;
-			}		
+			}
 		}
-        
+
 		loadEnemyPaths(levelFile);
 		int ammoCount = levelFile.get();
 		player->setAmmoCount(ammoCount);
@@ -316,23 +322,23 @@ public:
         vertLevelSize = 25;
         horizLevelSize = 80;
         numOfEnemies = 0;
-        
+
         for (int i = 0; i < 25; i++){
             enemyArray[i] = new enemyType(3, 3, 0);
         }
-        
+
         player = new playerType(10, 10, 0);
-        
+
         buildLevel(levelFile);
-        
-        
-        
+
+
+
         sfmlHandler->reInitialize(vertLevelSize, horizLevelSize, numOfEnemies,
                                   levelArray, enemyArray, player);
-        
+
         return 0;
     }
-    
+
     /*
     ~levelType(){
         delete player;
@@ -343,25 +349,25 @@ public:
         return;
     }
     */
-     
+
     levelType()
     {
 		vertLevelSize = 25;
 		horizLevelSize = 80;
 		numOfEnemies = 0;
-        
+
         for (int i = 0; i < 25; i++){
             enemyArray[i] = new enemyType(3, 3, 0);
         }
-        
+
         player = new playerType(10, 10, 0);
-        
+
         sfmlHandler = new drawType(vertLevelSize, horizLevelSize, numOfEnemies,
                                    levelArray, enemyArray, player);
-           
+
         return;
 	}
-    
+
     drawType *sfmlHandler;
     playerType *player;
 private:

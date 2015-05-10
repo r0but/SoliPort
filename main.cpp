@@ -62,13 +62,15 @@ int gameLoop(levelType level){
 
         userInput = level.sfmlHandler->getInput();
 
-        if (userInput == 'q')
+        if (userInput == 'q'){
             return 2;
+        }
         else if (userInput == '!'){
             return 3;
         }
-        else
+        else{
             winOrLose = level.iterateMap(userInput);
+        }
         cout << endl << endl;
 
         if (winOrLose == 1){
@@ -76,8 +78,6 @@ int gameLoop(levelType level){
             level.sfmlHandler->setTextures();
             level.sfmlHandler->drawScreen();
             drawWinScreen();
-            level.sfmlHandler->drawWinScreen();
-            level.sfmlHandler->getInput();
             return 1;
             break;
         }
@@ -153,9 +153,15 @@ int main(){
         string levelPath = resourcePath() + levelName;
         levelFile.open(levelPath.c_str());
 
-        if (!levelFile.is_open() && currentLevel == 1){
-            cout << "Level not found. Make sure you typed it correctly, ";
-            cout << "and that it is in the game's directory." << endl << endl;
+        if (!levelFile.is_open()){
+            if (currentLevel > 1){
+                level.sfmlHandler->drawWinScreen();
+                level.sfmlHandler->getInput();
+            }
+            else{
+                cout << "Level not found. Make sure you typed it correctly, ";
+                cout << "and that it is in the game's directory." << endl << endl;
+            }
             break;
         }
 
@@ -168,8 +174,11 @@ int main(){
         if (gameLoopExit == 3){
             break;
         }
-        else if (gameLoopExit == 2 || gameLoopExit == 1){
+        else if (gameLoopExit == 2){
             currentLevel = 0;
+            continue;
+        }
+        else if (gameLoopExit == 1){
             continue;
         }
     }
