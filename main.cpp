@@ -76,15 +76,17 @@ int gameLoop(levelType level){
             level.sfmlHandler->setTextures();
             level.sfmlHandler->drawScreen();
             drawWinScreen();
+            level.sfmlHandler->drawWinScreen();
+            level.sfmlHandler->getInput();
             return 1;
             break;
         }
         else if (winOrLose == 2){
             level.drawMap();
-            
+
             cout << "Player coords: " << level.player->getXCoord() << ", "
                  << level.player->getYCoord() << '\n';
-            
+
             level.sfmlHandler->setTextures();
             level.sfmlHandler->drawScreen();
             drawLossScreen();
@@ -108,31 +110,31 @@ int main(){
         bool quitGame = false;
 
         cout << "currentLevel: " << currentLevel << '\n';
-        
+
 //        if (currentLevel > numOfLevels){
 //            level.sfmlHandler->drawWinScreen();
 //            level.sfmlHandler->getInput();
 //            currentLevel = 1;
 //        }
-        
+
         if (currentLevel == 1){
             userChoice = level.sfmlHandler->drawMainMenu();
         }
-        
+
         switch (userChoice){
             case '1':
                 levelName = "level" + to_string(currentLevel) + ".slv";
                 break;
-            
+
             case '2':
                 quitGame = true;
                 break;
-                
+
             default:
                 quitGame = true;
                 break;
         }
-        
+
         if (userChoice == '1'){
             levelName = "level" + to_string(currentLevel) + ".slv";
         }
@@ -143,7 +145,7 @@ int main(){
             currentLevel = 0;
             continue;
         }
-        
+
         if (quitGame)
             break;
 
@@ -156,21 +158,17 @@ int main(){
             cout << "and that it is in the game's directory." << endl << endl;
             break;
         }
-        else if (!levelFile.is_open()){
-            currentLevel = 0;
-            continue;
-        }
 
         level.reInitialize(levelFile);
 
         levelFile.close();
-        
+
         int gameLoopExit = gameLoop(level);
-        
+
         if (gameLoopExit == 3){
             break;
         }
-        else if (gameLoopExit == 2){
+        else if (gameLoopExit == 2 || gameLoopExit == 1){
             currentLevel = 0;
             continue;
         }
